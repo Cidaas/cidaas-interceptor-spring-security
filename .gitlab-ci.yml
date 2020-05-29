@@ -24,7 +24,7 @@ before_script:
     - mkdir ~/.ssh
     - chmod 700 ~/.ssh
     - eval $(ssh-agent -s)
-    - ssh-add ~/.ssh/id_rsa
+    # - ssh-add ~/.ssh/id_rsa
     - ssh-keyscan gitlab.widas.de >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
     - echo "CheckHostIP no" >> ~/.ssh/config
