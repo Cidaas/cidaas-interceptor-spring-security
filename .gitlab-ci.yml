@@ -30,13 +30,10 @@ codecoverage:
     script:
       - mkdir m2_repository
       - mvn -Dmaven.test.skip=false -s .m2/settings.xml -B clean install test
-      - ls -lah
-      - cd target
-      - ls -lah
-      - cat cidaas-interceptor-spring-security/target/site/jacoco-aggregate-ut/index.html
+      - cat target/site/jacoco/index.html
     artifacts:
         paths:
-            - cidaas-interceptor-spring-security/target/site/jacoco-aggregate-ut
+            - target/site/jacoco/*
 
 code_quality_json:
   stage: test
@@ -189,7 +186,7 @@ pages:
     - cd public
     - mkdir jacoco
     - cd ..
-    - mv build/reports/jacoco/jacocoFullReport/* public/jacoco/
+    - mv target/site/jacoco/* public/jacoco/
   artifacts:
     paths:
       - public
