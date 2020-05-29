@@ -29,7 +29,7 @@ codecoverage:
     stage: test
     script:
       - mkdir m2_repository
-      - mvn -Dmaven.test.skip=false -s .m2/settings.xml -B clean install -P widas-gitlab-ci 
+      - mvn -Dmaven.test.skip=false -s .m2/settings.xml -B clean install test
       - cat cidaas-interceptor-spring-security/target/site/jacoco-aggregate-ut/index.html
     artifacts:
         paths:
