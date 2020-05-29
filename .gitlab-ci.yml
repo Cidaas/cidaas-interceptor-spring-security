@@ -16,28 +16,20 @@ variables:
 
 image: docker:git
 
-before_script:
-    - "mkdir .m2 && echo $CIM_MAVEN_M2_SETTINGS > .m2/settings.xml"
-    - "git config user.email 'devel@widas.de'"
-    - "git config user.name 'devel'"
-    - "git config http.sslVerify 'false'"
-    - mkdir ~/.ssh
-    - chmod 700 ~/.ssh
-    - eval $(ssh-agent -s)
-    # - ssh-add ~/.ssh/id_rsa
-    - ssh-keyscan gitlab.widas.de >> ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
-    - echo "CheckHostIP no" >> ~/.ssh/config
+.configure_git:
+    before_script:
+        - mkdir .m2
+        - "echo -n $CIM_MAVEN_M2_SETTINGS_GENERAL > .m2/settings.xml"
+        - "git config user.email 'devel@widas.de'"
+        - "git config user.name 'devel'"
 
 codecoverage:
-    image: docker:git
+    extends: .configure_git
+    image: maven:3-jdk-8
     stage: test
     script:
-      - ls -ltr $PWD
       - mkdir m2_repository
-      - docker run -di --name maven -v $PWD:/home/cidaas-interceptor-spring-security/current -v $PWD/m2_repository:/root/.m2/repository
-      - docker ps
-      - docker exec maven mvn -Dmaven.test.skip=false -s .m2/settings.xml -B clean install -P widas-gitlab-ci 
+      - mvn -Dmaven.test.skip=false -s .m2/settings.xml -B clean install -P widas-gitlab-ci 
       - cat cidaas-interceptor-spring-security/target/site/jacoco-aggregate-ut/index.html
     artifacts:
         paths:
