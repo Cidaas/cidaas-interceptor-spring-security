@@ -27,7 +27,7 @@ before_script:
     - chmod 644 ~/.ssh/known_hosts
     - echo "CheckHostIP no" >> ~/.ssh/config
 
-maven_build:
+codecoverage:
     image: docker:git
     stage: build
     script:
