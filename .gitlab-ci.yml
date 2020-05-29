@@ -21,6 +21,8 @@ before_script:
     - "git config user.email 'devel@widas.de'"
     - "git config user.name 'devel'"
     - "git config http.sslVerify 'false'"
+    - mkdir ~/.ssh
+    - chmod 700 ~/.ssh
     - eval $(ssh-agent -s)
     - ssh-add ~/.ssh/id_rsa
     - ssh-keyscan gitlab.widas.de >> ~/.ssh/known_hosts
@@ -29,7 +31,7 @@ before_script:
 
 codecoverage:
     image: docker:git
-    stage: build
+    stage: test
     script:
       - ls -ltr $PWD
       - mkdir m2_repository
