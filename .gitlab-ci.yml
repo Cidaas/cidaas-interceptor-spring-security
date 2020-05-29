@@ -30,6 +30,9 @@ codecoverage:
     script:
       - mkdir m2_repository
       - mvn -Dmaven.test.skip=false -s .m2/settings.xml -B clean install test
+      - ls -lah
+      - cd target
+      - ls -lah
       - cat cidaas-interceptor-spring-security/target/site/jacoco-aggregate-ut/index.html
     artifacts:
         paths:
