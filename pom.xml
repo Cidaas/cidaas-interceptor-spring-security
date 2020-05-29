@@ -18,6 +18,11 @@
 			<url>https://opensource.org/licenses/mit-license</url>
 		</license>
 	</licenses>
+	
+	<properties>
+		<jacoco.coverage>0.50</jacoco.coverage>
+	</properties>
+
 
 	<developers>
 		<developer>
@@ -127,9 +132,21 @@
     						<goal>check</goal>
     					</goals>
     					<configuration>
-    						<configuration>
-    							<dataFile>${basedir}/target/coverage-reports/jacoco-unit.exec</dataFile>
-    						</configuration>
+    					    <rules>
+								<rule>
+									<element>BUNDLE</element>
+									<limits>
+										<limit>
+											<counter>COMPLEXITY</counter>
+											<value>COVEREDRATIO</value>
+											<minimum>${jacoco.coverage}</minimum>
+										</limit>
+									</limits>
+								</rule>
+							</rules>
+							<configuration>
+								<dataFile>${basedir}/target/coverage-reports/jacoco-unit.exec</dataFile>
+							</configuration>
     					</configuration>
     				</execution>
     			</executions>
