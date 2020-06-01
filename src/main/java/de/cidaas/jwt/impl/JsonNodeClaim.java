@@ -1,21 +1,21 @@
 package de.cidaas.jwt.impl;
 
 
-import de.cidaas.jwt.exceptions.JWTDecodeException;
-import de.cidaas.jwt.interfaces.Claim;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
-
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectReader;
+
+import de.cidaas.jwt.exceptions.JWTDecodeException;
+import de.cidaas.jwt.interfaces.Claim;
 
 /**
  * The JsonNodeClaim retrieves a claim value from a JsonNode object.
@@ -32,7 +32,7 @@ class JsonNodeClaim implements Claim {
 
     @Override
     public Boolean asBoolean() {
-        return !data.isBoolean() ? null : data.asBoolean();
+        return (data.isBoolean()==false) ? null : data.asBoolean();
     }
 
     @Override

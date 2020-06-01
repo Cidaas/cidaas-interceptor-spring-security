@@ -50,6 +50,7 @@ public class PreAuthenticatedAuthenticationJsonWebToken implements Authenticatio
 
     @Override
     public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
+    	 logger.debug("Could not authenticate method {setAuthenticated}", PreAuthenticatedAuthenticationJsonWebToken.class.getName());
 
     }
 

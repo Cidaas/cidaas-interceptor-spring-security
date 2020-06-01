@@ -1,6 +1,7 @@
 package de.cidaas.jwt.algorithms;
 
 
+import de.cidaas.jwt.constants.MessageConstants;
 import de.cidaas.jwt.exceptions.SignatureGenerationException;
 import de.cidaas.jwt.exceptions.SignatureVerificationException;
 import de.cidaas.jwt.interfaces.DecodedJWT;
@@ -23,7 +24,7 @@ class ECDSAAlgorithm extends Algorithm {
     ECDSAAlgorithm(CryptoHelper crypto, String id, String algorithm, int ecNumberSize, ECDSAKeyProvider keyProvider) throws IllegalArgumentException {
         super(id, algorithm);
         if (keyProvider == null) {
-            throw new IllegalArgumentException("The Key Provider cannot be null.");
+            throw new IllegalArgumentException(MessageConstants.PROVIDER_KEY_NULL_MESSAGE);
         }
         this.keyProvider = keyProvider;
         this.crypto = crypto;
@@ -41,7 +42,7 @@ class ECDSAAlgorithm extends Algorithm {
         try {
             ECPublicKey publicKey = keyProvider.getPublicKeyById(jwt.getKeyId());
             if (publicKey == null) {
-                throw new IllegalStateException("The given Public Key is null.");
+                throw new IllegalStateException(MessageConstants.PUBLIC_KEY_NULL_MESSAGE);
             }
             boolean valid = crypto.verifySignatureFor(getDescription(), publicKey, jwt.getHeader(), jwt.getPayload(), JOSEToDER(signatureBytes));
 
@@ -58,7 +59,7 @@ class ECDSAAlgorithm extends Algorithm {
         try {
             ECPrivateKey privateKey = keyProvider.getPrivateKey();
             if (privateKey == null) {
-                throw new IllegalStateException("The given Private Key is null.");
+                throw new IllegalStateException(MessageConstants.PRIVATE_KEY_NULL_MESSAGE);
             }
             byte[] signature = crypto.createSignatureFor(getDescription(), privateKey, headerBytes, payloadBytes);
             return DERToJOSE(signature);
@@ -73,7 +74,7 @@ class ECDSAAlgorithm extends Algorithm {
         try {
             ECPrivateKey privateKey = keyProvider.getPrivateKey();
             if (privateKey == null) {
-                throw new IllegalStateException("The given Private Key is null.");
+                throw new IllegalStateException(MessageConstants.PRIVATE_KEY_NULL_MESSAGE);
             }
             byte[] signature = crypto.createSignatureFor(getDescription(), privateKey, contentBytes);
             return DERToJOSE(signature);
@@ -92,7 +93,7 @@ class ECDSAAlgorithm extends Algorithm {
         // DER Structure: http://crypto.stackexchange.com/a/1797
         boolean derEncoded = derSignature[0] == 0x30 && derSignature.length != ecNumberSize * 2;
         if (!derEncoded) {
-            throw new SignatureException("Invalid DER signature format.");
+            throw new SignatureException(MessageConstants.INVALID_DER_MESSAGE);
         }
 
         final byte[] joseSignature = new byte[ecNumberSize * 2];
@@ -107,7 +108,7 @@ class ECDSAAlgorithm extends Algorithm {
         //Convert to unsigned. Should match DER length - offset
         int encodedLength = derSignature[offset++] & 0xff;
         if (encodedLength != derSignature.length - offset) {
-            throw new SignatureException("Invalid DER signature format.");
+            throw new SignatureException(MessageConstants.INVALID_DER_MESSAGE);
         }
 
         //Skip 0x02
@@ -116,7 +117,7 @@ class ECDSAAlgorithm extends Algorithm {
         //Obtain R number length (Includes padding) and skip it
         int rLength = derSignature[offset++];
         if (rLength > ecNumberSize + 1) {
-            throw new SignatureException("Invalid DER signature format.");
+            throw new SignatureException(MessageConstants.INVALID_DER_MESSAGE);
         }
         int rPadding = ecNumberSize - rLength;
         //Retrieve R number
@@ -128,7 +129,7 @@ class ECDSAAlgorithm extends Algorithm {
         //Obtain S number length. (Includes padding)
         int sLength = derSignature[offset++];
         if (sLength > ecNumberSize + 1) {
-            throw new SignatureException("Invalid DER signature format.");
+            throw new SignatureException(MessageConstants.INVALID_DER_MESSAGE);
         }
         int sPadding = ecNumberSize - sLength;
         //Retrieve R number
@@ -140,7 +141,7 @@ class ECDSAAlgorithm extends Algorithm {
     //Visible for testing
     byte[] JOSEToDER(byte[] joseSignature) throws SignatureException {
         if (joseSignature.length != ecNumberSize * 2) {
-            throw new SignatureException("Invalid JOSE signature format.");
+            throw new SignatureException(MessageConstants.INVALID_JOSE_MESSAGE);
         }
 
         // Retrieve R and S number's length and padding.
@@ -151,7 +152,7 @@ class ECDSAAlgorithm extends Algorithm {
 
         int length = 2 + rLength + 2 + sLength;
         if (length > 255) {
-            throw new SignatureException("Invalid JOSE signature format.");
+            throw new SignatureException(MessageConstants.INVALID_JOSE_MESSAGE);
         }
 
         final byte[] derSignature;

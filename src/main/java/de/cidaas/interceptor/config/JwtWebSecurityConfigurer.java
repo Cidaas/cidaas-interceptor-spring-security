@@ -2,6 +2,8 @@ package de.cidaas.interceptor.config;
 
 import de.cidaas.jwk.JwkProvider;
 import de.cidaas.jwk.JwkProviderBuilder;
+import de.cidaas.jwt.constants.MessageConstants;
+
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -30,7 +32,7 @@ public class JwtWebSecurityConfigurer {
      * @param issuer of the token for this API and must match the {@code iss} value in the token
      * @return JwtWebSecurityConfigurer for further configuration
      */
-    @SuppressWarnings({"WeakerAccess", "SameParameterValue"})
+    @SuppressWarnings({MessageConstants.WEAKER_ACCESS_MESSAGE, MessageConstants.SAME_PARAMETER_VALUE_MESSAGE})
     public static JwtWebSecurityConfigurer forRS256(String audience, String issuer) {
         final JwkProvider jwkProvider = new JwkProviderBuilder(issuer).build();
         return new JwtWebSecurityConfigurer(audience, issuer, new JwtAuthenticationProvider(jwkProvider, issuer, audience));
@@ -45,7 +47,7 @@ public class JwtWebSecurityConfigurer {
      * @param provider of Spring Authentication objects that can validate a {@link de.cidaas.interceptor.authentication.PreAuthenticatedAuthenticationJsonWebToken}
      * @return JwtWebSecurityConfigurer for further configuration
      */
-    @SuppressWarnings({"WeakerAccess", "SameParameterValue"})
+    @SuppressWarnings({MessageConstants.WEAKER_ACCESS_MESSAGE, MessageConstants.SAME_PARAMETER_VALUE_MESSAGE})
     public static JwtWebSecurityConfigurer forRS256(String audience, String issuer, AuthenticationProvider provider) {
         return new JwtWebSecurityConfigurer(audience, issuer, provider);
     }
@@ -57,7 +59,7 @@ public class JwtWebSecurityConfigurer {
      * @param secret used to sign and verify tokens encoded in Base64
      * @return JwtWebSecurityConfigurer for further configuration
      */
-    @SuppressWarnings({"WeakerAccess", "SameParameterValue"})
+    @SuppressWarnings({MessageConstants.WEAKER_ACCESS_MESSAGE, MessageConstants.SAME_PARAMETER_VALUE_MESSAGE})
     public static JwtWebSecurityConfigurer forHS256WithBase64Secret(String audience, String issuer, String secret) {
         final byte[] secretBytes = new Base64(true).decode(secret);
         return new JwtWebSecurityConfigurer(audience, issuer, new JwtAuthenticationProvider(secretBytes, issuer, audience));
@@ -70,7 +72,7 @@ public class JwtWebSecurityConfigurer {
      * @param secret used to sign and verify tokens
      * @return JwtWebSecurityConfigurer for further configuration
      */
-    @SuppressWarnings({"WeakerAccess", "SameParameterValue"})
+    @SuppressWarnings({MessageConstants.WEAKER_ACCESS_MESSAGE, MessageConstants.SAME_PARAMETER_VALUE_MESSAGE})
     public static JwtWebSecurityConfigurer forHS256(String audience, String issuer, byte[] secret) {
         return new JwtWebSecurityConfigurer(audience, issuer, new JwtAuthenticationProvider(secret, issuer, audience));
     }
@@ -82,7 +84,7 @@ public class JwtWebSecurityConfigurer {
      * @param provider of Spring Authentication objects that can validate a {@link de.cidaas.interceptor.authentication.PreAuthenticatedAuthenticationJsonWebToken}
      * @return JwtWebSecurityConfigurer for further configuration
      */
-    @SuppressWarnings({"WeakerAccess", "SameParameterValue"})
+    @SuppressWarnings({MessageConstants.WEAKER_ACCESS_MESSAGE, MessageConstants.SAME_PARAMETER_VALUE_MESSAGE})
     public static JwtWebSecurityConfigurer forHS256(String audience, String issuer, AuthenticationProvider provider) {
         return new JwtWebSecurityConfigurer(audience, issuer, provider);
     }
