@@ -38,8 +38,11 @@ class BucketImpl implements Bucket {
     }
 
     @Override
-    public synchronized long willLeakIn() {
-        return willLeakIn(1);
+    public long willLeakIn() {
+    	synchronized (this) {
+    		 return willLeakIn(1);
+		}
+       
     }
 
     @Override

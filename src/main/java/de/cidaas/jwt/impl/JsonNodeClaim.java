@@ -32,7 +32,11 @@ class JsonNodeClaim implements Claim {
 
     @Override
     public Boolean asBoolean() {
-        return (data.isBoolean()==false) ? null : data.asBoolean();
+    	if(data.isBoolean()) {
+    		return null;
+    	}else {
+    		return data.asBoolean();
+    	}
     }
 
     @Override

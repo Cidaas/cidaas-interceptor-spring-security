@@ -7,7 +7,9 @@ package de.cidaas.jwt.constants;
  * @author Widas Sumit
  *
  */
-public interface MessageConstants {
+public class MessageConstants {
+	
+
 	
 	public static final String INVALID_DER_MESSAGE = "Invalid DER signature format.";
 	public static final String INVALID_JOSE_MESSAGE = "Invalid JOSE signature format.";
@@ -17,5 +19,7 @@ public interface MessageConstants {
 	public static final String SAME_PARAMETER_VALUE_MESSAGE = "SameParameterValue";
 	public static final String WEAKER_ACCESS_MESSAGE = "WeakerAccess";
 	
+
+
 
 }

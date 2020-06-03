@@ -1,18 +1,29 @@
+/**
+ * 
+ */
 package de.cidaas.jwt.impl;
 
-public interface PublicClaims {
-	 //Header
-    static String ALGORITHM = "alg";
-    static String CONTENT_TYPE = "cty";
-    static String TYPE = "typ";
-    static String KEY_ID = "kid";
+/**
+ * @author Widas Sumit
+ *
+ */
+public class PublicClaims {
+	
 
-    //Payload
-    static String ISSUER = "iss";
-    static String SUBJECT = "sub";
-    static String EXPIRES_AT = "exp";
-    static String NOT_BEFORE = "nbf";
-    static String ISSUED_AT = "iat";
-    static String JWT_ID = "jti";
-    static String AUDIENCE = "aud";
+	 //Header
+   public static final String ALGORITHM = "alg";
+   public static final String CONTENT_TYPE = "cty";
+   public static final String TYPE = "typ";
+   public static final String KEY_ID = "kid";
+
+   //Payload
+   public static final String ISSUER = "iss";
+   public static final String SUBJECT = "sub";
+   public static final String EXPIRES_AT = "exp";
+   public static final String NOT_BEFORE = "nbf";
+   public static final String ISSUED_AT = "iat";
+   public static final String JWT_ID = "jti";
+   public static final String AUDIENCE = "aud";
+
+
 }
