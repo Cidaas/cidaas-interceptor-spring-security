@@ -68,7 +68,7 @@ class BucketImpl implements Bucket {
     }
 
     @Override
-    public synchronized boolean consume() {
+    public  boolean consume() {
     	synchronized (this) {
     		return consume(1);
 		}
@@ -76,7 +76,7 @@ class BucketImpl implements Bucket {
     }
 
     @Override
-    public synchronized boolean consume(long count) {
+    public  boolean consume(long count) {
     	
     	synchronized (this) {
             assertPositiveValue(count, size, String.format("Cannot consume %d tokens when the BucketImpl size is %d!", count, size));
