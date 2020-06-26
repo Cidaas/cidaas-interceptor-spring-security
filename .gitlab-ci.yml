@@ -30,6 +30,8 @@ codecoverage:
     script:
       - mkdir m2_repository
       - mvn -Dmaven.test.skip=false -s .m2/settings.xml -B clean install test
+      - pwd
+      - ls -ll
       - cat target/site/jacoco/index.html
     artifacts:
         paths:
@@ -160,7 +162,7 @@ create_codequality_badges:
 
     - export DUPLICATION_ISSUES=$(cat duplication_issues.txt)
     - anybadge -l duplications -v $DUPLICATION_ISSUES -m "%d" -u -f duplication_issues.svg $BADGE_COLOR_RANGE_CRITICAL
-
+    
     - export LOC=$(cat loc.txt)
     - anybadge -l LoC -v $LOC -f loc.svg --color=green
 
