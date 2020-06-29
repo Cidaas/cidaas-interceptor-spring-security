@@ -1,16 +1,19 @@
 package de.cidaas.jwt.impl;
 
-import de.cidaas.jwt.exceptions.JWTDecodeException;
-import de.cidaas.jwt.interfaces.Claim;
-
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import de.cidaas.jwt.exceptions.JWTDecodeException;
+import de.cidaas.jwt.interfaces.Claim;
 
 /**
  * The {@link NullClaim} class is a Claim implementation that returns null when any of it's methods it's called.
  */
 public class NullClaim implements Claim {
+	
+	private static final Object[] emptyArray = {};
     @Override
     public boolean isNull() {
         return true;
@@ -46,14 +49,15 @@ public class NullClaim implements Claim {
         return null;
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public <T> T[] asArray(Class<T> tClazz) throws JWTDecodeException {
-        return null;
+    	return (T[]) emptyArray;
     }
 
     @Override
     public <T> List<T> asList(Class<T> tClazz) throws JWTDecodeException {
-        return null;
+        return Collections.emptyList();
     }
 
     @Override

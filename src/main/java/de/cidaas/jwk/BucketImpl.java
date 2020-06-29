@@ -38,44 +38,56 @@ class BucketImpl implements Bucket {
     }
 
     @Override
-    public synchronized long willLeakIn() {
-        return willLeakIn(1);
+    public long willLeakIn() {
+    	synchronized (this) {
+    		 return willLeakIn(1);
+		}
+       
     }
 
     @Override
-    public synchronized long willLeakIn(long count) {
-        assertPositiveValue(count, size, String.format("Cannot consume %d tokens when the BucketImpl size is %d!", count, size));
-        updateAvailableTokens();
-        if (available >= count) {
-            return 0;
-        }
+    public  long willLeakIn(long count) {
+    	synchronized (this) {
+            assertPositiveValue(count, size, String.format("Cannot consume %d tokens when the BucketImpl size is %d!", count, size));
+            updateAvailableTokens();
+            if (available >= count) {
+                return 0;
+            }
 
-        long leakDelta = getTimeSinceLastTokenAddition();
-        if (leakDelta < getRatePerToken()) {
-            leakDelta = getRatePerToken() - leakDelta;
-        }
-        final long remaining = count - available - 1;
-        if (remaining > 0) {
-            leakDelta += getRatePerToken() * remaining;
-        }
-        return leakDelta;
+            long leakDelta = getTimeSinceLastTokenAddition();
+            if (leakDelta < getRatePerToken()) {
+                leakDelta = getRatePerToken() - leakDelta;
+            }
+            final long remaining = count - available - 1;
+            if (remaining > 0) {
+                leakDelta += getRatePerToken() * remaining;
+            }
+            return leakDelta;
+		}
+
     }
 
     @Override
-    public synchronized boolean consume() {
-        return consume(1);
+    public  boolean consume() {
+    	synchronized (this) {
+    		return consume(1);
+		}
+        
     }
 
     @Override
-    public synchronized boolean consume(long count) {
-        assertPositiveValue(count, size, String.format("Cannot consume %d tokens when the BucketImpl size is %d!", count, size));
-        updateAvailableTokens();
+    public  boolean consume(long count) {
+    	
+    	synchronized (this) {
+            assertPositiveValue(count, size, String.format("Cannot consume %d tokens when the BucketImpl size is %d!", count, size));
+            updateAvailableTokens();
 
-        if (count <= available) {
-            available -= count;
-            return true;
+            if (count <= available) {
+                available -= count;
+                return true;
+            }
+            return false;
         }
-        return false;
     }
 
     private void updateAvailableTokens() {

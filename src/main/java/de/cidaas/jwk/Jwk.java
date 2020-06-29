@@ -2,6 +2,9 @@ package de.cidaas.jwk;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Maps;
+
+import de.cidaas.jwt.constants.MessageConstants;
+
 import org.apache.commons.codec.binary.Base64;
 
 import java.math.BigInteger;
@@ -17,7 +20,7 @@ import java.util.Map;
 /**
  * Represents a JSON Web Key (JWK) used to verify the signature of JWTs
  */
-@SuppressWarnings("WeakerAccess")
+@SuppressWarnings(MessageConstants.WEAKER_ACCESS_MESSAGE)
 public class Jwk {
     private static final String PUBLIC_KEY_ALGORITHM = "RSA";
 
@@ -44,7 +47,7 @@ public class Jwk {
      * @param certificateThumbprint x5t
      * @param additionalAttributes  additional attributes not part of the standard ones
      */
-    @SuppressWarnings("WeakerAccess")
+    @SuppressWarnings(MessageConstants.WEAKER_ACCESS_MESSAGE)
     public Jwk(String id, String type, String algorithm, String usage, List<String> operations, String certificateUrl, List<String> certificateChain, String certificateThumbprint, Map<String, Object> additionalAttributes) {
         this.id = id;
         this.type = type;
@@ -73,7 +76,7 @@ public class Jwk {
      * Use {@link #Jwk(String, String, String, String, List, String, List, String, Map)}
      */
     @Deprecated
-    @SuppressWarnings("WeakerAccess")
+    @SuppressWarnings(MessageConstants.WEAKER_ACCESS_MESSAGE)
     public Jwk(String id, String type, String algorithm, String usage, String operations, String certificateUrl, List<String> certificateChain, String certificateThumbprint, Map<String, Object> additionalAttributes) {
         this(id, type, algorithm, usage, Collections.singletonList(operations), certificateUrl, certificateChain, certificateThumbprint, additionalAttributes);
     }
@@ -99,27 +102,27 @@ public class Jwk {
         }
     }
 
-    @SuppressWarnings("WeakerAccess")
+    @SuppressWarnings(MessageConstants.WEAKER_ACCESS_MESSAGE)
     public String getId() {
         return id;
     }
 
-    @SuppressWarnings("WeakerAccess")
+    @SuppressWarnings(MessageConstants.WEAKER_ACCESS_MESSAGE)
     public String getType() {
         return type;
     }
 
-    @SuppressWarnings("WeakerAccess")
+    @SuppressWarnings(MessageConstants.WEAKER_ACCESS_MESSAGE)
     public String getAlgorithm() {
         return algorithm;
     }
 
-    @SuppressWarnings("WeakerAccess")
+    @SuppressWarnings(MessageConstants.WEAKER_ACCESS_MESSAGE)
     public String getUsage() {
         return usage;
     }
 
-    @SuppressWarnings("WeakerAccess")
+    @SuppressWarnings(MessageConstants.WEAKER_ACCESS_MESSAGE)
     public String getOperations() {
         if (operations == null || operations.isEmpty()) {
             return null;
@@ -134,22 +137,22 @@ public class Jwk {
         return ops.substring(0, ops.length() - delimiter.length());
     }
 
-    @SuppressWarnings("WeakerAccess")
+    @SuppressWarnings(MessageConstants.WEAKER_ACCESS_MESSAGE)
     public List<String> getOperationsAsList() {
         return operations;
     }
 
-    @SuppressWarnings("WeakerAccess")
+    @SuppressWarnings(MessageConstants.WEAKER_ACCESS_MESSAGE)
     public String getCertificateUrl() {
         return certificateUrl;
     }
 
-    @SuppressWarnings("WeakerAccess")
+    @SuppressWarnings(MessageConstants.WEAKER_ACCESS_MESSAGE)
     public List<String> getCertificateChain() {
         return certificateChain;
     }
 
-    @SuppressWarnings("WeakerAccess")
+    @SuppressWarnings(MessageConstants.WEAKER_ACCESS_MESSAGE)
     public String getCertificateThumbprint() {
         return certificateThumbprint;
     }
@@ -164,7 +167,7 @@ public class Jwk {
      * @return a public key
      * @throws InvalidPublicKeyException if the key cannot be built or the key type is not RSA
      */
-    @SuppressWarnings("WeakerAccess")
+    @SuppressWarnings(MessageConstants.WEAKER_ACCESS_MESSAGE)
     public PublicKey getPublicKey() throws InvalidPublicKeyException {
         if (!PUBLIC_KEY_ALGORITHM.equalsIgnoreCase(type)) {
             throw new InvalidPublicKeyException("The key is not of type RSA", null);
