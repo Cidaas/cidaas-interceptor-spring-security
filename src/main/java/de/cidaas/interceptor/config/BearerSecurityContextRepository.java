@@ -31,6 +31,8 @@ public class BearerSecurityContextRepository implements SecurityContextRepositor
 
     @Override
     public void saveContext(SecurityContext context, HttpServletRequest request, HttpServletResponse response) {
+    	
+    	 logger.info("Inside the saveContext of BearerSecurityContextRepository{}");
     }
 
     @Override

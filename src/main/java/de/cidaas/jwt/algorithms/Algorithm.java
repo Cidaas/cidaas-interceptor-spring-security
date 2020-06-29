@@ -1,19 +1,24 @@
 package de.cidaas.jwt.algorithms;
 
 
+import java.security.interfaces.ECKey;
+import java.security.interfaces.ECPrivateKey;
+import java.security.interfaces.ECPublicKey;
+import java.security.interfaces.RSAKey;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
+
+import de.cidaas.jwt.constants.MessageConstants;
 import de.cidaas.jwt.exceptions.SignatureGenerationException;
 import de.cidaas.jwt.exceptions.SignatureVerificationException;
 import de.cidaas.jwt.interfaces.DecodedJWT;
 import de.cidaas.jwt.interfaces.ECDSAKeyProvider;
 import de.cidaas.jwt.interfaces.RSAKeyProvider;
 
-import java.io.ByteArrayOutputStream;
-import java.security.interfaces.*;
-
 /**
  * The Algorithm class represents an algorithm to be used in the Signing or Verification process of a Token.
  */
-@SuppressWarnings("WeakerAccess")
+@SuppressWarnings(MessageConstants.WEAKER_ACCESS_MESSAGE)
 public abstract class Algorithm {
 
     private final String name;

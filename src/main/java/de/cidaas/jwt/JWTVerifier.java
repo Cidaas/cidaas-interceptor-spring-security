@@ -28,7 +28,7 @@ public final class JWTVerifier implements de.cidaas.jwt.interfaces.JWTVerifier {
         this.clock = clock;
         this.parser = new JWTParser();
     }
-
+    
     /**
      * Initialize a JWTVerifier instance using the given Algorithm.
      *

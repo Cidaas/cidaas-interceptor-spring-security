@@ -31,7 +31,11 @@ class PayloadImpl implements Payload {
         this.notBefore = notBefore;
         this.issuedAt = issuedAt;
         this.jwtId = jwtId;
-        this.tree = tree != null ? Collections.unmodifiableMap(tree) : Collections.<String, JsonNode>emptyMap();
+        if(tree != null) {
+        	this.tree = Collections.unmodifiableMap(tree);
+        }else {
+        	this.tree = Collections.<String, JsonNode>emptyMap();
+        }
         this.objectReader = objectReader;
     }
 

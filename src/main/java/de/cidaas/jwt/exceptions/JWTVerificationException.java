@@ -1,7 +1,12 @@
 package de.cidaas.jwt.exceptions;
 
 public class JWTVerificationException extends RuntimeException {
-    public JWTVerificationException(String message) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 7082415765974002717L;
+
+	public JWTVerificationException(String message) {
         this(message, null);
     }
 
