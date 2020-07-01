@@ -29,7 +29,8 @@ codecoverage:
     stage: test
     script:
       - mkdir m2_repository
-      - mvn -Dmaven.test.skip=false -s .m2/settings.xml -B clean install test
+      - mvn clean test
+#      - mvn -Dmaven.test.skip=false -s .m2/settings.xml -B clean install test
       - pwd
       - ls -ll
       - cat target/site/jacoco/index.html
