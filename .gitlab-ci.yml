@@ -29,10 +29,11 @@ codecoverage:
     stage: test
     script:
       - mkdir m2_repository
-      - mvn -Dmaven.test.skip=false -s .m2/settings.xml -B clean install test
-      - pwd
-      - ls -ll
-      - cat target/site/jacoco/index.html
+      - mvn clean test
+      - mvn jacoco:report
+#      - mvn -Dmaven.test.skip=false -s .m2/settings.xml -B clean install test
+      - cat target/site/jacoco/index.html | grep -o '<tfoot>.*</tfoot>'
+    coverage: /Total.*?([0-9]{1,3})%/
     artifacts:
         paths:
             - target/site/jacoco/*
