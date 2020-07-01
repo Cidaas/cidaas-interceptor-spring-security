@@ -97,17 +97,11 @@
             				</execution>
             			</executions>
             		</plugin>
-            	</plugins>
-        	</build>
-    	</profile>
-    </profiles>
-    <build>
-        <plugins>
-            <plugin>
-    			<groupId>org.jacoco</groupId>
-    			<artifactId>jacoco-maven-plugin</artifactId>
-    			<version>0.8.2</version>
-    			<executions>
+            		<plugin>
+    			        <groupId>org.jacoco</groupId>
+    			        <artifactId>jacoco-maven-plugin</artifactId>
+    			        <version>0.8.2</version>
+    			        <executions>
     				<execution>
     					<id>default-prepare-agent</id>
     					<goals>
@@ -136,9 +130,12 @@
     				</execution>
     			</executions>
     		</plugin>
-    	</plugins>
-	</build>
-
+            	</plugins>
+        	</build>
+    	</profile>
+    </profiles>
+    
+    
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jackson.version>[2.9.9.2,)</jackson.version>
