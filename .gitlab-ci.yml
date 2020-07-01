@@ -25,7 +25,7 @@ image: docker:git
 
 codecoverage:
     extends: .configure_git
-    image: maven:latest
+    image: maven:3-jdk-8
     stage: test
     script:
       - mkdir m2_repository
