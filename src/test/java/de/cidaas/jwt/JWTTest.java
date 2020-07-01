@@ -68,9 +68,9 @@ public class JWTTest {
 		Assert.assertEquals("https://bosch-test.cidaas.de",decodeJwt.getIssuer());//
 		Assert.assertEquals("6d58b872-1380-459c-9ab1-f2feef8207a2",decodeJwt.getSubject());//
 		Assert.assertEquals("a3d0c64c-d629-4646-aedf-88280bad8271",decodeJwt.getAudience().get(0));//[]
-		Assert.assertEquals("Fri Jun 05 20:39:07 IST 2020",decodeJwt.getExpiresAt().toString());//
+		Assert.assertEquals(1591369747000L,decodeJwt.getExpiresAt().getTime());//
 		Assert.assertNull(decodeJwt.getNotBefore());//null
-		Assert.assertEquals("Thu Jun 04 20:39:07 IST 2020",decodeJwt.getIssuedAt().toString());//
+		Assert.assertEquals(1591283347000L,decodeJwt.getIssuedAt().getTime());//
 		Assert.assertNotNull(decodeJwt.getId());//null
 		Assert.assertNotNull(decodeJwt.getClaim(""));//
 		Assert.assertNotNull(decodeJwt.getClaims());//
