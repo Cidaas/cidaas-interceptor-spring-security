@@ -33,12 +33,12 @@ codecoverage:
 #      - mvn -Dmaven.test.skip=false -s .m2/settings.xml -B clean install test
       - pwd
       - ls -ll
-      - cd target/
+      - cd /
       - ls -ll
       #- cat target/site/jacoco/index.html
     artifacts:
         paths:
-            - target/site/jacoco/*
+           # - target/site/jacoco/*
 
 code_quality_json:
   stage: test
