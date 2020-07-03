@@ -76,29 +76,18 @@ code_quality_html:
     DOCKER_TLS_CERTDIR: ""
   script:
     - docker pull codeclimate/codeclimate
-    # Clone the .codeclimate.yml from the code quality base repo
     - git clone ${QUALITY_BASE_REPO}
-    - cp codequality/conf/codeclimate/rules/java/.codeclimate.yml .
+    - cp codequality/conf/codeclimate/rules/js/.codeclimate.yml .
     - rm -rf codequality
-    - cat .codeclimate.yml
-    # Install the code climate engines
-    - docker run
-      --env SOURCE_CODE="$PWD"
-      --env CODECLIMATE_CODE="$PWD"
-      --volume "$PWD":/code
-      --volume /var/run/docker.sock:/var/run/docker.sock
-      --volume /tmp/cc:/tmp/cc
-      --volume /.codeclimate.yml:/.codeclimate.yml
-      codeclimate/codeclimate engines:install > /dev/null
-    # Run code climate
-    - docker run
-      --env SOURCE_CODE="$PWD"
-      --env CODECLIMATE_CODE="$PWD"
-      --volume "$PWD":/code
-      --volume /var/run/docker.sock:/var/run/docker.sock
-      --volume /tmp/cc:/tmp/cc
-      --volume /.codeclimate.yml:/.codeclimate.yml
-      codeclimate/codeclimate analyze /code -f html > codeclimate.html
+    - ls -ll
+    - docker info
+    - docker run 
+       --env SOURCE_CODE="$PWD"
+       --env CODECLIMATE_CODE="$PWD"
+       --volume "$PWD":/code 
+       --volume /var/run/docker.sock:/var/run/docker.sock 
+       --volume /tmp/cc:/tmp/cc 
+       codeclimate/codeclimate:latest analyze -f html > codeclimate.html
   artifacts:
     paths: [codeclimate.html]
   dependencies: []
