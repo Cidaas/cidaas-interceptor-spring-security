@@ -54,7 +54,7 @@ codecoverage:
     coverage: /Total.*?([0-9]{1,3})%/
     artifacts:
         paths:
-            []target/site/jacoco/*]
+            [target/site/jacoco/*]
 
             
 dependency_scanning:
