@@ -55,7 +55,7 @@ codecoverage:
     coverage: /Total.*?([0-9]{1,3})%/
     artifacts:
         paths:
-            [target/site/jacoco/*]
+            - target/site/jacoco/*
 
             
 dependency_scanning:
@@ -150,7 +150,7 @@ create_codequality_badges:
     - python3 calculate_codeclimate_metrics.py gl-code-quality-report.json
 
     # Parse the code coverage report for badges
-    - cp target/site/jacoco/index.html .
+    - cp /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/index.html .
     - cp /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/loc.txt .
     - cp codequality/src/count_lines_java_code.py .
     - python3 count_lines_java_code.py
