@@ -1,5 +1,6 @@
 package de.cidaas.jwt.impl;
 
+import java.lang.reflect.Array;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -13,7 +14,6 @@ import de.cidaas.jwt.interfaces.Claim;
  */
 public class NullClaim implements Claim {
 	
-	private static final Object[] emptyArray = {};
     @Override
     public boolean isNull() {
         return true;
@@ -52,7 +52,7 @@ public class NullClaim implements Claim {
     @SuppressWarnings("unchecked")
 	@Override
     public <T> T[] asArray(Class<T> tClazz) throws JWTDecodeException {
-    	return (T[]) emptyArray;
+    	return (T[]) Array.newInstance(tClazz, 0);
     }
 
     @Override
