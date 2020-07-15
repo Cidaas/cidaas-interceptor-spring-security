@@ -5,7 +5,7 @@
 
 	<groupId>de.cidaas</groupId>
 	<artifactId>cidaas-interceptor-spring-security</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<description>Interceptor for Cidaas Java Spring Clients</description>
