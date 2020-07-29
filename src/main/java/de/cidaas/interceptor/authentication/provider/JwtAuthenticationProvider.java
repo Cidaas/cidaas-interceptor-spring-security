@@ -1,12 +1,6 @@
 package de.cidaas.interceptor.authentication.provider;
 
-import de.cidaas.jwk.*;
-import de.cidaas.jwt.JWT;
-import de.cidaas.jwt.JWTVerifier;
-import de.cidaas.jwt.algorithms.Algorithm;
-import de.cidaas.jwt.exceptions.JWTVerificationException;
-
-import de.cidaas.interceptor.authentication.JwtAuthentication;
+import java.security.interfaces.RSAPublicKey;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +10,16 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 
-import java.security.interfaces.RSAPublicKey;
+import de.cidaas.interceptor.authentication.JwtAuthentication;
+import de.cidaas.jwk.InvalidPublicKeyException;
+import de.cidaas.jwk.Jwk;
+import de.cidaas.jwk.JwkException;
+import de.cidaas.jwk.JwkProvider;
+import de.cidaas.jwk.SigningKeyNotFoundException;
+import de.cidaas.jwt.JWT;
+import de.cidaas.jwt.JWTVerifier;
+import de.cidaas.jwt.algorithms.Algorithm;
+import de.cidaas.jwt.exceptions.JWTVerificationException;
 
 public class JwtAuthenticationProvider implements AuthenticationProvider {
 
