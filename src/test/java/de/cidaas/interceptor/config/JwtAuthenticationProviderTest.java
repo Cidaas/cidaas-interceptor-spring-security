@@ -14,6 +14,7 @@ import org.springframework.security.core.AuthenticationException;
 
 import de.cidaas.interceptor.authentication.AuthenticationJsonWebToken;
 import de.cidaas.interceptor.authentication.JwtAuthentication;
+import de.cidaas.interceptor.authentication.provider.JwtAuthenticationProvider;
 import de.cidaas.jwk.JwkProvider;
 import de.cidaas.jwt.JWTVerifier;
 import de.cidaas.jwt.algorithms.Algorithm;

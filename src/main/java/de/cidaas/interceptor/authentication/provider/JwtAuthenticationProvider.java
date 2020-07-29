@@ -1,4 +1,4 @@
-package de.cidaas.interceptor.config;
+package de.cidaas.interceptor.authentication.provider;
 
 import de.cidaas.jwk.*;
 import de.cidaas.jwt.JWT;

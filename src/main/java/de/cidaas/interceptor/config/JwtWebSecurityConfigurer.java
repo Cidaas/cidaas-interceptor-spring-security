@@ -1,5 +1,6 @@
 package de.cidaas.interceptor.config;
 
+import de.cidaas.interceptor.authentication.provider.JwtAuthenticationProvider;
 import de.cidaas.jwk.JwkProvider;
 import de.cidaas.jwk.JwkProviderBuilder;
 import de.cidaas.jwt.constants.MessageConstants;
