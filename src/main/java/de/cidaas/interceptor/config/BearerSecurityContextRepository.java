@@ -1,6 +1,9 @@
 package de.cidaas.interceptor.config;
 
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -10,9 +13,6 @@ import org.springframework.security.web.context.HttpRequestResponseHolder;
 import org.springframework.security.web.context.SecurityContextRepository;
 
 import de.cidaas.interceptor.authentication.PreAuthenticatedAuthenticationJsonWebToken;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 public class BearerSecurityContextRepository implements SecurityContextRepository {
     private final static Logger logger = LoggerFactory.getLogger(BearerSecurityContextRepository.class);

@@ -1,8 +1,9 @@
 package de.cidaas.interceptor.authentication;
 
+import org.springframework.security.core.Authentication;
+
 import de.cidaas.jwt.JWTVerifier;
 import de.cidaas.jwt.exceptions.JWTVerificationException;
-import org.springframework.security.core.Authentication;
 
 public interface JwtAuthentication {
 

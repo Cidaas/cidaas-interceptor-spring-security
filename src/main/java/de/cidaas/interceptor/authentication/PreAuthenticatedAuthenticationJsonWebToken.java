@@ -1,17 +1,18 @@
 package de.cidaas.interceptor.authentication;
 
-import de.cidaas.jwt.JWT;
-import de.cidaas.jwt.JWTVerifier;
-import de.cidaas.jwt.exceptions.JWTDecodeException;
-import de.cidaas.jwt.exceptions.JWTVerificationException;
-import de.cidaas.jwt.interfaces.DecodedJWT;
+import java.util.Collection;
+import java.util.Collections;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
-import java.util.Collection;
-import java.util.Collections;
+import de.cidaas.jwt.JWT;
+import de.cidaas.jwt.JWTVerifier;
+import de.cidaas.jwt.exceptions.JWTDecodeException;
+import de.cidaas.jwt.exceptions.JWTVerificationException;
+import de.cidaas.jwt.interfaces.DecodedJWT;
 
 public class PreAuthenticatedAuthenticationJsonWebToken implements Authentication, JwtAuthentication {
 

@@ -1,14 +1,14 @@
 package de.cidaas.interceptor.config;
 
-import de.cidaas.interceptor.authentication.provider.JwtAuthenticationProvider;
-import de.cidaas.jwk.JwkProvider;
-import de.cidaas.jwk.JwkProviderBuilder;
-import de.cidaas.jwt.constants.MessageConstants;
-
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+
+import de.cidaas.interceptor.authentication.provider.JwtAuthenticationProvider;
+import de.cidaas.jwk.JwkProvider;
+import de.cidaas.jwk.JwkProviderBuilder;
+import de.cidaas.jwt.constants.MessageConstants;
 
 /**
  * Utility class for configuring Security for your Spring API
