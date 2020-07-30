@@ -15,13 +15,9 @@ import de.cidaas.jwt.constants.MessageConstants;
  */
 public class JwtWebSecurityConfigurer {
 
-    final String audience;
-    final String issuer;
     final AuthenticationProvider provider;
 
-    private JwtWebSecurityConfigurer(String audience, String issuer, AuthenticationProvider authenticationProvider) {
-        this.audience = audience;
-        this.issuer = issuer;
+    private JwtWebSecurityConfigurer(AuthenticationProvider authenticationProvider) {
         this.provider = authenticationProvider;
     }
 
@@ -33,24 +29,9 @@ public class JwtWebSecurityConfigurer {
      * @param issuer of the token for this API and must match the {@code iss} value in the token
      * @return JwtWebSecurityConfigurer for further configuration
      */
-    @SuppressWarnings({MessageConstants.WEAKER_ACCESS_MESSAGE, MessageConstants.SAME_PARAMETER_VALUE_MESSAGE})
-    public static JwtWebSecurityConfigurer forRS256(String audience, String issuer) {
+    public static JwtWebSecurityConfigurer offlineValidationForRS256(String audience, String issuer) {
         final JwkProvider jwkProvider = new JwkProviderBuilder(issuer).build();
-        return new JwtWebSecurityConfigurer(audience, issuer, new OfflineAuthenticationProvider(jwkProvider, issuer, audience));
-    }
-
-    /**
-     * Configures application authorization for JWT signed with RS256
-     * Will try to validate the token using the public key downloaded from "$issuer/.well-known/jwks.json"
-     * and matched by the value of {@code kid} of the JWT header
-     * @param audience identifier of the API and must match the {@code aud} value in the token
-     * @param issuer of the token for this API and must match the {@code iss} value in the token
-     * @param provider of Spring Authentication objects that can validate a {@link de.cidaas.interceptor.authentication.PreAuthenticatedAuthenticationJsonWebToken}
-     * @return JwtWebSecurityConfigurer for further configuration
-     */
-    @SuppressWarnings({MessageConstants.WEAKER_ACCESS_MESSAGE, MessageConstants.SAME_PARAMETER_VALUE_MESSAGE})
-    public static JwtWebSecurityConfigurer forRS256(String audience, String issuer, AuthenticationProvider provider) {
-        return new JwtWebSecurityConfigurer(audience, issuer, provider);
+        return new JwtWebSecurityConfigurer(new OfflineAuthenticationProvider(jwkProvider, issuer, audience));
     }
 
     /**
@@ -60,34 +41,9 @@ public class JwtWebSecurityConfigurer {
      * @param secret used to sign and verify tokens encoded in Base64
      * @return JwtWebSecurityConfigurer for further configuration
      */
-    @SuppressWarnings({MessageConstants.WEAKER_ACCESS_MESSAGE, MessageConstants.SAME_PARAMETER_VALUE_MESSAGE})
-    public static JwtWebSecurityConfigurer forHS256WithBase64Secret(String audience, String issuer, String secret) {
+    public static JwtWebSecurityConfigurer offlineValidationForHS256(String audience, String issuer, String secret) {
         final byte[] secretBytes = new Base64(true).decode(secret);
-        return new JwtWebSecurityConfigurer(audience, issuer, new OfflineAuthenticationProvider(secretBytes, issuer, audience));
-    }
-
-    /**
-     * Configures application authorization for JWT signed with HS256
-     * @param audience identifier of the API and must match the {@code aud} value in the token
-     * @param issuer of the token for this API and must match the {@code iss} value in the token
-     * @param secret used to sign and verify tokens
-     * @return JwtWebSecurityConfigurer for further configuration
-     */
-    @SuppressWarnings({MessageConstants.WEAKER_ACCESS_MESSAGE, MessageConstants.SAME_PARAMETER_VALUE_MESSAGE})
-    public static JwtWebSecurityConfigurer forHS256(String audience, String issuer, byte[] secret) {
-        return new JwtWebSecurityConfigurer(audience, issuer, new OfflineAuthenticationProvider(secret, issuer, audience));
-    }
-
-    /**
-     * Configures application authorization for JWT signed with HS256
-     * @param audience identifier of the API and must match the {@code aud} value in the token
-     * @param issuer of the token for this API and must match the {@code iss} value in the token
-     * @param provider of Spring Authentication objects that can validate a {@link de.cidaas.interceptor.authentication.PreAuthenticatedAuthenticationJsonWebToken}
-     * @return JwtWebSecurityConfigurer for further configuration
-     */
-    @SuppressWarnings({MessageConstants.WEAKER_ACCESS_MESSAGE, MessageConstants.SAME_PARAMETER_VALUE_MESSAGE})
-    public static JwtWebSecurityConfigurer forHS256(String audience, String issuer, AuthenticationProvider provider) {
-        return new JwtWebSecurityConfigurer(audience, issuer, provider);
+        return new JwtWebSecurityConfigurer(new OfflineAuthenticationProvider(secretBytes, issuer, audience));
     }
 
     /**
@@ -97,7 +53,6 @@ public class JwtWebSecurityConfigurer {
      * @return the http configuration for further customizations
      * @throws Exception
      */
-    @SuppressWarnings("unused")
     public HttpSecurity configure(HttpSecurity http) throws Exception {
         return http
                 .authenticationProvider(provider)
