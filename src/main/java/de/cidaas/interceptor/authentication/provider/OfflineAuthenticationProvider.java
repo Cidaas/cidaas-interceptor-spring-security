@@ -105,7 +105,7 @@ public class OfflineAuthenticationProvider implements AuthenticationProvider {
     private static JWTVerifier providerForRS256(RSAPublicKey publicKey, String issuer, String audience, long leeway) {
         return JWT.require(Algorithm.RSA256(publicKey, null))
                 .withIssuer(issuer)
-//                .withAudience(audience)
+                .withAudience(audience)
                 .acceptLeeway(leeway)
                 .build();
     }
