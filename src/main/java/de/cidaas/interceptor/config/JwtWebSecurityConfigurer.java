@@ -5,7 +5,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 
-import de.cidaas.interceptor.authentication.provider.JwtAuthenticationProvider;
+import de.cidaas.interceptor.authentication.provider.OfflineAuthenticationProvider;
 import de.cidaas.jwk.JwkProvider;
 import de.cidaas.jwk.JwkProviderBuilder;
 import de.cidaas.jwt.constants.MessageConstants;
@@ -36,7 +36,7 @@ public class JwtWebSecurityConfigurer {
     @SuppressWarnings({MessageConstants.WEAKER_ACCESS_MESSAGE, MessageConstants.SAME_PARAMETER_VALUE_MESSAGE})
     public static JwtWebSecurityConfigurer forRS256(String audience, String issuer) {
         final JwkProvider jwkProvider = new JwkProviderBuilder(issuer).build();
-        return new JwtWebSecurityConfigurer(audience, issuer, new JwtAuthenticationProvider(jwkProvider, issuer, audience));
+        return new JwtWebSecurityConfigurer(audience, issuer, new OfflineAuthenticationProvider(jwkProvider, issuer, audience));
     }
 
     /**
@@ -63,7 +63,7 @@ public class JwtWebSecurityConfigurer {
     @SuppressWarnings({MessageConstants.WEAKER_ACCESS_MESSAGE, MessageConstants.SAME_PARAMETER_VALUE_MESSAGE})
     public static JwtWebSecurityConfigurer forHS256WithBase64Secret(String audience, String issuer, String secret) {
         final byte[] secretBytes = new Base64(true).decode(secret);
-        return new JwtWebSecurityConfigurer(audience, issuer, new JwtAuthenticationProvider(secretBytes, issuer, audience));
+        return new JwtWebSecurityConfigurer(audience, issuer, new OfflineAuthenticationProvider(secretBytes, issuer, audience));
     }
 
     /**
@@ -75,7 +75,7 @@ public class JwtWebSecurityConfigurer {
      */
     @SuppressWarnings({MessageConstants.WEAKER_ACCESS_MESSAGE, MessageConstants.SAME_PARAMETER_VALUE_MESSAGE})
     public static JwtWebSecurityConfigurer forHS256(String audience, String issuer, byte[] secret) {
-        return new JwtWebSecurityConfigurer(audience, issuer, new JwtAuthenticationProvider(secret, issuer, audience));
+        return new JwtWebSecurityConfigurer(audience, issuer, new OfflineAuthenticationProvider(secret, issuer, audience));
     }
 
     /**

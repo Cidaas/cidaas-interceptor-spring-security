@@ -14,7 +14,7 @@ import org.springframework.security.core.AuthenticationException;
 
 import de.cidaas.interceptor.authentication.AuthenticationJsonWebToken;
 import de.cidaas.interceptor.authentication.JwtAuthentication;
-import de.cidaas.interceptor.authentication.provider.JwtAuthenticationProvider;
+import de.cidaas.interceptor.authentication.provider.OfflineAuthenticationProvider;
 import de.cidaas.jwk.JwkProvider;
 import de.cidaas.jwt.JWTVerifier;
 import de.cidaas.jwt.algorithms.Algorithm;
@@ -25,7 +25,7 @@ import de.cidaas.jwt.interfaces.Clock;
 public class JwtAuthenticationProviderTest  {
 	
 	JwkProvider provider = null;
-	JwtAuthenticationProvider authenticationProvider = null;
+	OfflineAuthenticationProvider authenticationProvider = null;
 	Authentication authentication = null;
 	Authentication jwtAuth = null;
 	JwtAuthentication jwtAuthentication = null;
@@ -41,7 +41,7 @@ public class JwtAuthenticationProviderTest  {
 	public void setUp() {
 		byte[] byteArray = {};
 		
-		 authenticationProvider = new JwtAuthenticationProvider(byteArray, "mock", "mock");
+		 authenticationProvider = new OfflineAuthenticationProvider(byteArray, "mock", "mock");
 		// provider = mock(JwkProvider.class);
 		// authenticationProvider2 = new JwtAuthenticationProvider(provider, "mock", "mock");
 		 authentication = mock(Authentication.class);

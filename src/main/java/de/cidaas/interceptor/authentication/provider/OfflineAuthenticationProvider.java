@@ -21,9 +21,9 @@ import de.cidaas.jwt.JWTVerifier;
 import de.cidaas.jwt.algorithms.Algorithm;
 import de.cidaas.jwt.exceptions.JWTVerificationException;
 
-public class JwtAuthenticationProvider implements AuthenticationProvider {
+public class OfflineAuthenticationProvider implements AuthenticationProvider {
 
-    private static Logger logger = LoggerFactory.getLogger(JwtAuthenticationProvider.class);
+    private static Logger logger = LoggerFactory.getLogger(OfflineAuthenticationProvider.class);
 
     private final byte[] secret;
     private final String issuer;
@@ -32,14 +32,14 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 
     private long leeway = 0;
 
-    public JwtAuthenticationProvider(byte[] secret, String issuer, String audience) {
+    public OfflineAuthenticationProvider(byte[] secret, String issuer, String audience) {
         this.secret = secret;
         this.issuer = issuer;
         this.audience = audience;
         this.jwkProvider = null;
     }
 
-    public JwtAuthenticationProvider(JwkProvider jwkProvider, String issuer, String audience) {
+    public OfflineAuthenticationProvider(JwkProvider jwkProvider, String issuer, String audience) {
         this.jwkProvider = jwkProvider;
         this.secret = null;
         this.issuer = issuer;
@@ -74,7 +74,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
      * @return this same provider instance to chain calls.
      */
     @SuppressWarnings("unused")
-    public JwtAuthenticationProvider withJwtVerifierLeeway(long leeway) {
+    public OfflineAuthenticationProvider withJwtVerifierLeeway(long leeway) {
         this.leeway = leeway;
         return this;
     }
