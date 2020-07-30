@@ -31,7 +31,7 @@ public class JwtWebSecurityConfigurer {
      */
     public static JwtWebSecurityConfigurer offlineValidationForRS256(String clientId, String issuer) {
         final JwkProvider jwkProvider = new JwkProviderBuilder(issuer).build();
-        return new JwtWebSecurityConfigurer(new OfflineAuthenticationProvider(issuer, clientId, jwkProvider));
+        return new JwtWebSecurityConfigurer(new OfflineAuthenticationProvider(clientId, issuer, jwkProvider));
     }
 
     /**
@@ -42,7 +42,7 @@ public class JwtWebSecurityConfigurer {
      * @return JwtWebSecurityConfigurer for further configuration
      */
     public static JwtWebSecurityConfigurer offlineValidationForHS256(String clientId, String issuer, String secret) {
-        return new JwtWebSecurityConfigurer(new OfflineAuthenticationProvider(issuer, clientId, new Base64(true).decode(secret)));
+        return new JwtWebSecurityConfigurer(new OfflineAuthenticationProvider(clientId, issuer, new Base64(true).decode(secret)));
     }
     
     /**

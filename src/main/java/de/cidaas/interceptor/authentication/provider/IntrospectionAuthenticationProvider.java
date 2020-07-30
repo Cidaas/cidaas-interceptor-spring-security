@@ -8,15 +8,16 @@ import de.cidaas.interceptor.authentication.JwtAuthentication;
 import de.cidaas.jwk.JwkProvider;
 
 public class IntrospectionAuthenticationProvider implements AuthenticationProvider{
+		
+	private final String clientId;
+	private final String issuer;
+	private final String clientSecret;
+	 
 	
-	 private final String clientSecret;
-	 private final String issuer;
-	 private final String audience;
-	
-    public IntrospectionAuthenticationProvider(String clientSecret, String issuer, String audience) {
-        this.clientSecret = clientSecret;
+    public IntrospectionAuthenticationProvider(String clientId, String issuer, String clientSecret) {
+    	this.clientId = clientId;
         this.issuer = issuer;
-        this.audience = audience;
+        this.clientSecret = clientSecret;
     }
 	
 	@Override

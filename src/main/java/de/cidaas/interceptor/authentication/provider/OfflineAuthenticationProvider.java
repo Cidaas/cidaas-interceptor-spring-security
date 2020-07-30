@@ -32,18 +32,19 @@ public class OfflineAuthenticationProvider implements AuthenticationProvider {
 
     private long leeway = 0;
 
-    public OfflineAuthenticationProvider(String issuer, String clientId, byte[] secret) {
-        this.secret = secret;
-        this.issuer = issuer;
-        this.clientId = clientId;
+    public OfflineAuthenticationProvider(String clientId, String issuer, byte[] secret) {
+    	this.clientId = clientId;
+    	this.issuer = issuer;
+    	this.secret = secret;
         this.jwkProvider = null;
     }
 
-    public OfflineAuthenticationProvider(String issuer, String clientId, JwkProvider jwkProvider) {
-        this.jwkProvider = jwkProvider;
+    public OfflineAuthenticationProvider(String clientId, String issuer, JwkProvider jwkProvider) {
+    	this.clientId = clientId;
+    	this.issuer = issuer;
+    	this.jwkProvider = jwkProvider;
         this.secret = null;
-        this.issuer = issuer;
-        this.clientId = clientId;
+        
     }
 
     @Override
@@ -73,7 +74,6 @@ public class OfflineAuthenticationProvider implements AuthenticationProvider {
      * @param leeway the leeway value to use expressed in seconds.
      * @return this same provider instance to chain calls.
      */
-    @SuppressWarnings("unused")
     public OfflineAuthenticationProvider withJwtVerifierLeeway(long leeway) {
         this.leeway = leeway;
         return this;
