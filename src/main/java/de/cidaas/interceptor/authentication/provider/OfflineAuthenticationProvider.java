@@ -27,23 +27,23 @@ public class OfflineAuthenticationProvider implements AuthenticationProvider {
 
     private final byte[] secret;
     private final String issuer;
-    private final String audience;
+    private final String clientId;
     private final JwkProvider jwkProvider;
 
     private long leeway = 0;
 
-    public OfflineAuthenticationProvider(byte[] secret, String issuer, String audience) {
+    public OfflineAuthenticationProvider(String issuer, String clientId, byte[] secret) {
         this.secret = secret;
         this.issuer = issuer;
-        this.audience = audience;
+        this.clientId = clientId;
         this.jwkProvider = null;
     }
 
-    public OfflineAuthenticationProvider(JwkProvider jwkProvider, String issuer, String audience) {
+    public OfflineAuthenticationProvider(String issuer, String clientId, JwkProvider jwkProvider) {
         this.jwkProvider = jwkProvider;
         this.secret = null;
         this.issuer = issuer;
-        this.audience = audience;
+        this.clientId = clientId;
     }
 
     @Override
@@ -81,7 +81,7 @@ public class OfflineAuthenticationProvider implements AuthenticationProvider {
 
     private JWTVerifier jwtVerifier(JwtAuthentication authentication) throws AuthenticationException {
         if (secret != null) {
-            return providerForHS256(secret, issuer, audience, leeway);
+            return providerForHS256(secret, issuer, clientId, leeway);
         }
         final String kid = authentication.getKeyId();
         if (kid == null) {
@@ -92,7 +92,7 @@ public class OfflineAuthenticationProvider implements AuthenticationProvider {
         }
         try {
             final Jwk jwk = jwkProvider.get(kid);
-            return providerForRS256((RSAPublicKey) jwk.getPublicKey(), issuer, audience, leeway);
+            return providerForRS256((RSAPublicKey) jwk.getPublicKey(), issuer, clientId, leeway);
         } catch (SigningKeyNotFoundException e) {
             throw new AuthenticationServiceException("Could not retrieve jwks from issuer", e);
         } catch (InvalidPublicKeyException e) {
