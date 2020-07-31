@@ -13,6 +13,7 @@ import de.cidaas.jwt.JWTVerifier;
 import de.cidaas.jwt.exceptions.JWTVerificationException;
 import de.cidaas.jwt.interfaces.DecodedJWT;
 
+@SuppressWarnings("serial")
 public class AuthenticationJsonWebToken implements Authentication, JwtAuthentication {
 
 	private final DecodedJWT decoded;

@@ -14,6 +14,7 @@ import de.cidaas.jwt.exceptions.JWTDecodeException;
 import de.cidaas.jwt.exceptions.JWTVerificationException;
 import de.cidaas.jwt.interfaces.DecodedJWT;
 
+@SuppressWarnings("serial")
 public class PreAuthenticatedAuthenticationJsonWebToken implements Authentication, JwtAuthentication {
 
     private static Logger logger = LoggerFactory.getLogger(PreAuthenticatedAuthenticationJsonWebToken.class);
