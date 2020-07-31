@@ -11,7 +11,7 @@ import org.mockito.Mockito;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 
-import de.cidaas.interceptor.authentication.AuthenticationJsonWebToken;
+import de.cidaas.interceptor.authentication.JwtAuthentication;
 import de.cidaas.interceptor.authentication.PreAuthenticatedAuthenticationJsonWebTokenTest;
 import de.cidaas.interceptor.authentication.provider.OfflineAuthenticationProvider;
 import de.cidaas.jwk.JwkProvider;
@@ -44,7 +44,7 @@ public class JwtAuthenticationProviderTest  {
 		// provider = mock(JwkProvider.class);
 		// authenticationProvider2 = new JwtAuthenticationProvider(provider, "mock", "mock");
 		 authentication = mock(Authentication.class);
-		 jwtAuth = mock(AuthenticationJsonWebToken.class);
+		 jwtAuth = mock(JwtAuthentication.class);
 		 jwtAuthentication = mock(PreAuthenticatedAuthenticationJsonWebTokenTest.class);
 		 algo=  mock(Algorithm.class);
 		 clock = mock(Clock.class);

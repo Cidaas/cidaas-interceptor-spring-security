@@ -13,13 +13,13 @@ import de.cidaas.jwt.exceptions.JWTDecodeException;
 import de.cidaas.jwt.interfaces.DecodedJWT;
 
 @SuppressWarnings("serial")
-public class PreAuthenticatedAuthenticationJsonWebToken implements Authentication {
+public class JwtPreAuthentication implements Authentication {
 
-    private static Logger logger = LoggerFactory.getLogger(PreAuthenticatedAuthenticationJsonWebToken.class);
+    private static Logger logger = LoggerFactory.getLogger(JwtPreAuthentication.class);
 
     private final DecodedJWT token;
 
-    PreAuthenticatedAuthenticationJsonWebToken(DecodedJWT token) {
+    JwtPreAuthentication(DecodedJWT token) {
         this.token = token;
     }
 
@@ -50,7 +50,7 @@ public class PreAuthenticatedAuthenticationJsonWebToken implements Authenticatio
 
     @Override
     public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
-    	 logger.debug("Could not authenticate method {setAuthenticated}", PreAuthenticatedAuthenticationJsonWebToken.class.getName());
+    	 logger.debug("Could not authenticate method {setAuthenticated}", JwtPreAuthentication.class.getName());
 
     }
 
@@ -59,14 +59,14 @@ public class PreAuthenticatedAuthenticationJsonWebToken implements Authenticatio
         return token.getSubject();
     }
 
-    public static PreAuthenticatedAuthenticationJsonWebToken usingToken(String token) {
+    public static JwtPreAuthentication usingToken(String token) {
         if (token == null) {
-            logger.debug("No token was provided to build {}", PreAuthenticatedAuthenticationJsonWebToken.class.getName());
+            logger.debug("No token was provided to build {}", JwtPreAuthentication.class.getName());
             return null;
         }
         try {
             DecodedJWT jwt = JWT.decode(token);
-            return new PreAuthenticatedAuthenticationJsonWebToken(jwt);
+            return new JwtPreAuthentication(jwt);
         } catch (JWTDecodeException e) {
             logger.debug("Failed to decode token as jwt", e);
             return null;

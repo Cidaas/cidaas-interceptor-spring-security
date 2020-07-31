@@ -10,8 +10,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 
-import de.cidaas.interceptor.authentication.AuthenticationJsonWebToken;
-import de.cidaas.interceptor.authentication.PreAuthenticatedAuthenticationJsonWebToken;
+import de.cidaas.interceptor.authentication.JwtAuthentication;
+import de.cidaas.interceptor.authentication.JwtPreAuthentication;
 import de.cidaas.jwk.InvalidPublicKeyException;
 import de.cidaas.jwk.Jwk;
 import de.cidaas.jwk.JwkException;
@@ -50,7 +50,7 @@ public class OfflineAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return PreAuthenticatedAuthenticationJsonWebToken.class.equals(authentication);
+        return JwtPreAuthentication.class.equals(authentication);
     }
 
     @Override
@@ -59,10 +59,10 @@ public class OfflineAuthenticationProvider implements AuthenticationProvider {
             return null;
         }
 
-        PreAuthenticatedAuthenticationJsonWebToken jwt = (PreAuthenticatedAuthenticationJsonWebToken) authentication;
+        JwtPreAuthentication jwt = (JwtPreAuthentication) authentication;
         try {
         	JWTVerifier jwtVerifier = jwtVerifier(jwt);
-        	final Authentication jwtAuth = new AuthenticationJsonWebToken(jwt.getToken(), jwtVerifier);
+        	final Authentication jwtAuth = new JwtAuthentication(jwt.getToken(), jwtVerifier);
             logger.info("Authenticated with jwt with scopes {}", jwtAuth.getAuthorities());
             return jwtAuth;
         } catch (JWTVerificationException e) {
@@ -75,7 +75,7 @@ public class OfflineAuthenticationProvider implements AuthenticationProvider {
         return this;
     }
 
-    private JWTVerifier jwtVerifier(PreAuthenticatedAuthenticationJsonWebToken authentication) throws AuthenticationException {
+    private JWTVerifier jwtVerifier(JwtPreAuthentication authentication) throws AuthenticationException {
         if (secret != null) {
             return providerForHS256(secret, issuer, clientId, leeway);
         }

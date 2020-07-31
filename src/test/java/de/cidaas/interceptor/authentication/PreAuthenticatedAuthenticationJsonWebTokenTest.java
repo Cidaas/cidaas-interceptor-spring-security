@@ -15,7 +15,7 @@ import de.cidaas.jwt.interfaces.DecodedJWT;
 
 public class PreAuthenticatedAuthenticationJsonWebTokenTest {
 	
-	PreAuthenticatedAuthenticationJsonWebToken jsonWebToken = null;
+	JwtPreAuthentication jsonWebToken = null;
 
 	@Before
 	public void test() {
@@ -30,9 +30,9 @@ public class PreAuthenticatedAuthenticationJsonWebTokenTest {
 	/**
 	 * @return
 	 */
-	private AuthenticationJsonWebToken getMockedAuthJsonWebInstance() {
+	private JwtAuthentication getMockedAuthJsonWebInstance() {
 		String token = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjAxZTM2YmFkLWQ3M2MtNGY1ZC05NDkxLTFjZjVjYTFhMDA3OSJ9.eyJhbXIiOlsiMiJdLCJ1YV9oYXNoIjoiNzY2NGViZWZkMWM5NDRlNzcxZWI4ZDBlODI2ZmFjMDIiLCJzaWQiOiJhZjg3NGY4YS02MjlhLTRiOGMtYTZmNC01ZmFhZmQ0ODg2MDEiLCJzdWIiOiI2ZDU4Yjg3Mi0xMzgwLTQ1OWMtOWFiMS1mMmZlZWY4MjA3YTIiLCJpc3ViIjoiNzI2NTExM2EtZDc3Ny00MTAxLThlMjItOGE2MWYwM2JjNjk4IiwiYXVkIjoiYTNkMGM2NGMtZDYyOS00NjQ2LWFlZGYtODgyODBiYWQ4MjcxIiwiaWF0IjoxNTkxMjgzMzQ3LCJhdXRoX3RpbWUiOjE1OTEyODMzNDcsImlzcyI6Imh0dHBzOi8vYm9zY2gtdGVzdC5jaWRhYXMuZGUiLCJqdGkiOiI5ZjliYzZhYy1kMjkyLTRkNDktOTA4My1kZGM5ZDIzYzhmNzQiLCJzY29wZXMiOlsiY2lkYWFzOnVzZXJpbmZvIiwiY2lkYWFzOndyaXRlIiwiY2lkYWFzOnJlYWQiLCJvZmZsaW5lX2FjY2VzcyJdLCJyb2xlcyI6WyJVU0VSIiwiQk9TQ0hfQURNSU4iLCJCT1NDSF9TVVBFUl9BRE1JTiIsIkJPU0NIX1VTRVIiXSwiZ3JvdXBzIjpbeyJncm91cElkIjoiQ0lEQUFTX0FETUlOUyIsInJvbGVzIjpbIkFETUlOIl19XSwiZXhwIjoxNTkxMzY5NzQ3fQ.i95T_W86rwnXdoiJB3KG8Ptx2AMxtc11LeVu83_YyRvKdqJ8-vb3jkTdbCZPrIKjCLuaLVeZ3SG1x-FGHkcZWUoA4k9BRI7J8aN1H04DbxG9Zikj_NSo1pKKMWZzFb7kfmRBd98rUqyq_5GePX02OB1ofBAalvKMhSa9QHD8s4E";
-		AuthenticationJsonWebToken authenticationJsonWebToken = new AuthenticationJsonWebToken(token, null);
+		JwtAuthentication authenticationJsonWebToken = new JwtAuthentication(token, null);
 		return authenticationJsonWebToken;
 	}
 	
@@ -55,19 +55,19 @@ public class PreAuthenticatedAuthenticationJsonWebTokenTest {
 	@Test
 	public void testPreAuthenticatedWebToken() {
 		String token = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjAxZTM2YmFkLWQ3M2MtNGY1ZC05NDkxLTFjZjVjYTFhMDA3OSJ9.eyJhbXIiOlsiMiJdLCJ1YV9oYXNoIjoiNzY2NGViZWZkMWM5NDRlNzcxZWI4ZDBlODI2ZmFjMDIiLCJzaWQiOiJhZjg3NGY4YS02MjlhLTRiOGMtYTZmNC01ZmFhZmQ0ODg2MDEiLCJzdWIiOiI2ZDU4Yjg3Mi0xMzgwLTQ1OWMtOWFiMS1mMmZlZWY4MjA3YTIiLCJpc3ViIjoiNzI2NTExM2EtZDc3Ny00MTAxLThlMjItOGE2MWYwM2JjNjk4IiwiYXVkIjoiYTNkMGM2NGMtZDYyOS00NjQ2LWFlZGYtODgyODBiYWQ4MjcxIiwiaWF0IjoxNTkxMjgzMzQ3LCJhdXRoX3RpbWUiOjE1OTEyODMzNDcsImlzcyI6Imh0dHBzOi8vYm9zY2gtdGVzdC5jaWRhYXMuZGUiLCJqdGkiOiI5ZjliYzZhYy1kMjkyLTRkNDktOTA4My1kZGM5ZDIzYzhmNzQiLCJzY29wZXMiOlsiY2lkYWFzOnVzZXJpbmZvIiwiY2lkYWFzOndyaXRlIiwiY2lkYWFzOnJlYWQiLCJvZmZsaW5lX2FjY2VzcyJdLCJyb2xlcyI6WyJVU0VSIiwiQk9TQ0hfQURNSU4iLCJCT1NDSF9TVVBFUl9BRE1JTiIsIkJPU0NIX1VTRVIiXSwiZ3JvdXBzIjpbeyJncm91cElkIjoiQ0lEQUFTX0FETUlOUyIsInJvbGVzIjpbIkFETUlOIl19XSwiZXhwIjoxNTkxMzY5NzQ3fQ.i95T_W86rwnXdoiJB3KG8Ptx2AMxtc11LeVu83_YyRvKdqJ8-vb3jkTdbCZPrIKjCLuaLVeZ3SG1x-FGHkcZWUoA4k9BRI7J8aN1H04DbxG9Zikj_NSo1pKKMWZzFb7kfmRBd98rUqyq_5GePX02OB1ofBAalvKMhSa9QHD8s4E";
-		assertNotNull(PreAuthenticatedAuthenticationJsonWebToken.usingToken(token));
+		assertNotNull(JwtPreAuthentication.usingToken(token));
 		
 	}
 	
 	@Test
 	public void testPreAuthenticatedWebTokenForNull() {
-		assertNull(PreAuthenticatedAuthenticationJsonWebToken.usingToken(null));
+		assertNull(JwtPreAuthentication.usingToken(null));
 		
 	}
 	
 	@Test
 	public void testPreAuthenticatedWebTokenForException() {
-		assertNull(PreAuthenticatedAuthenticationJsonWebToken.usingToken("dummy"));
+		assertNull(JwtPreAuthentication.usingToken("dummy"));
 		
 	}
 	
@@ -121,9 +121,9 @@ public class PreAuthenticatedAuthenticationJsonWebTokenTest {
 	/**
 	 * @return
 	 */
-	private PreAuthenticatedAuthenticationJsonWebToken getPreAuthJsonWebToken() {
+	private JwtPreAuthentication getPreAuthJsonWebToken() {
 		DecodedJWT token = (DecodedJWT) this.getMockedAuthJsonWebInstance().getDetails();
-		PreAuthenticatedAuthenticationJsonWebToken jsonWebToken = new PreAuthenticatedAuthenticationJsonWebToken(token);
+		JwtPreAuthentication jsonWebToken = new JwtPreAuthentication(token);
 		return jsonWebToken;
 	}
 
