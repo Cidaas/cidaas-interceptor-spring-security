@@ -9,13 +9,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
 import de.cidaas.jwt.JWT;
-import de.cidaas.jwt.JWTVerifier;
 import de.cidaas.jwt.exceptions.JWTDecodeException;
-import de.cidaas.jwt.exceptions.JWTVerificationException;
 import de.cidaas.jwt.interfaces.DecodedJWT;
 
 @SuppressWarnings("serial")
-public class PreAuthenticatedAuthenticationJsonWebToken implements Authentication, JwtAuthentication {
+public class PreAuthenticatedAuthenticationJsonWebToken implements Authentication {
 
     private static Logger logger = LoggerFactory.getLogger(PreAuthenticatedAuthenticationJsonWebToken.class);
 
@@ -75,18 +73,11 @@ public class PreAuthenticatedAuthenticationJsonWebToken implements Authenticatio
         }
     }
 
-    @Override
     public String getToken() {
         return token.getToken();
     }
 
-    @Override
     public String getKeyId() {
         return token.getKeyId();
-    }
-
-    @Override
-    public Authentication verify(JWTVerifier verifier) throws JWTVerificationException {
-        return new AuthenticationJsonWebToken(token.getToken(), verifier);
     }
 }

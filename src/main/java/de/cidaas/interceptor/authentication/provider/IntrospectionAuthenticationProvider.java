@@ -4,8 +4,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 
-import de.cidaas.interceptor.authentication.JwtAuthentication;
-import de.cidaas.jwk.JwkProvider;
+import de.cidaas.interceptor.authentication.PreAuthenticatedAuthenticationJsonWebToken;
 
 public class IntrospectionAuthenticationProvider implements AuthenticationProvider{
 		
@@ -28,7 +27,7 @@ public class IntrospectionAuthenticationProvider implements AuthenticationProvid
 
 	@Override
 	public boolean supports(Class<?> authentication) {
-		return JwtAuthentication.class.isAssignableFrom(authentication);
+		return PreAuthenticatedAuthenticationJsonWebToken.class.equals(authentication);
 	}
 
 }

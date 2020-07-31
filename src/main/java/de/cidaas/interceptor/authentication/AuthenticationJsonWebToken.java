@@ -14,29 +14,14 @@ import de.cidaas.jwt.exceptions.JWTVerificationException;
 import de.cidaas.jwt.interfaces.DecodedJWT;
 
 @SuppressWarnings("serial")
-public class AuthenticationJsonWebToken implements Authentication, JwtAuthentication {
+public class AuthenticationJsonWebToken implements Authentication {
 
 	private final DecodedJWT decoded;
 	private boolean authenticated;
 
-	AuthenticationJsonWebToken(String token, JWTVerifier verifier) throws JWTVerificationException {
+	public AuthenticationJsonWebToken(String token, JWTVerifier verifier) throws JWTVerificationException {
 		this.decoded = verifier == null ? JWT.decode(token) : verifier.verify(token);
 		this.authenticated = verifier != null;
-	}
-
-	@Override
-	public String getToken() {
-		return decoded.getToken();
-	}
-
-	@Override
-	public String getKeyId() {
-		return decoded.getKeyId();
-	}
-
-	@Override
-	public Authentication verify(JWTVerifier verifier) throws JWTVerificationException {
-		return new AuthenticationJsonWebToken(getToken(), verifier);
 	}
 
 	@Override

@@ -10,7 +10,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 
-import de.cidaas.interceptor.authentication.JwtAuthentication;
+import de.cidaas.interceptor.authentication.AuthenticationJsonWebToken;
+import de.cidaas.interceptor.authentication.PreAuthenticatedAuthenticationJsonWebToken;
 import de.cidaas.jwk.InvalidPublicKeyException;
 import de.cidaas.jwk.Jwk;
 import de.cidaas.jwk.JwkException;
@@ -49,7 +50,7 @@ public class OfflineAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return JwtAuthentication.class.isAssignableFrom(authentication);
+        return PreAuthenticatedAuthenticationJsonWebToken.class.equals(authentication);
     }
 
     @Override
@@ -58,9 +59,10 @@ public class OfflineAuthenticationProvider implements AuthenticationProvider {
             return null;
         }
 
-        JwtAuthentication jwt = (JwtAuthentication) authentication;
+        PreAuthenticatedAuthenticationJsonWebToken jwt = (PreAuthenticatedAuthenticationJsonWebToken) authentication;
         try {
-            final Authentication jwtAuth = jwt.verify(jwtVerifier(jwt));
+        	JWTVerifier jwtVerifier = jwtVerifier(jwt);
+        	final Authentication jwtAuth = new AuthenticationJsonWebToken(jwt.getToken(), jwtVerifier);
             logger.info("Authenticated with jwt with scopes {}", jwtAuth.getAuthorities());
             return jwtAuth;
         } catch (JWTVerificationException e) {
@@ -68,18 +70,12 @@ public class OfflineAuthenticationProvider implements AuthenticationProvider {
         }
     }
 
-    /**
-     * Allow a leeway to use on the JWT verification.
-     *
-     * @param leeway the leeway value to use expressed in seconds.
-     * @return this same provider instance to chain calls.
-     */
     public OfflineAuthenticationProvider withJwtVerifierLeeway(long leeway) {
         this.leeway = leeway;
         return this;
     }
 
-    private JWTVerifier jwtVerifier(JwtAuthentication authentication) throws AuthenticationException {
+    private JWTVerifier jwtVerifier(PreAuthenticatedAuthenticationJsonWebToken authentication) throws AuthenticationException {
         if (secret != null) {
             return providerForHS256(secret, issuer, clientId, leeway);
         }
