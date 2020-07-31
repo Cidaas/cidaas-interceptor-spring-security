@@ -31,22 +31,6 @@ public class AuthenticationJsonWebTokenTest {
 	}
 	
 	@Test
-	public void testGetToken() {
-		
-		AuthenticationJsonWebToken authenticationJsonWebToken = getMockedAuthJsonWebInstance();
-		assertNotNull(authenticationJsonWebToken.getToken());
-		
-	}
-	
-	@Test
-	public void testGetKeyId() {
-		
-		AuthenticationJsonWebToken authenticationJsonWebToken = getMockedAuthJsonWebInstance();
-		assertNotNull(authenticationJsonWebToken.getKeyId());
-		
-	}
-	
-	@Test
 	public void testGetName() {
 		
 		AuthenticationJsonWebToken authenticationJsonWebToken = getMockedAuthJsonWebInstance();
@@ -107,13 +91,4 @@ public class AuthenticationJsonWebTokenTest {
 		AuthenticationJsonWebToken authenticationJsonWebToken = getMockedAuthJsonWebInstance();
 		assertNotNull(authenticationJsonWebToken.getDetails());
 	}
-	
-	
-	
-	@Test
-	public void testVerify() {
-		AuthenticationJsonWebToken authenticationJsonWebToken = getMockedAuthJsonWebInstance();
-		assertNotNull(authenticationJsonWebToken.verify(verifier));
-	}
-
 }

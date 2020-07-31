@@ -104,13 +104,6 @@ public class PreAuthenticatedAuthenticationJsonWebTokenTest {
 	}
 	
 	@Test
-	public void testVerify() {
-		assertNotNull(jsonWebToken.verify(null));
-		
-	}
-	
-	
-	@Test
 	public void testIsAuthenticated() {
 		
 		assertFalse(jsonWebToken.isAuthenticated());
