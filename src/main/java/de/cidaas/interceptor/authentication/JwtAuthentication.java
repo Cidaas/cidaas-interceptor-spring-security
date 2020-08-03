@@ -2,7 +2,6 @@ package de.cidaas.interceptor.authentication;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -23,7 +22,7 @@ public class JwtAuthentication implements Authentication {
 	private final DecodedJWT token;
 	private boolean authenticated;
 
-	public JwtAuthentication(DecodedJWT token) {
+	private JwtAuthentication(DecodedJWT token) {
 		this.token = token;
 		this.authenticated = false;
 	}
@@ -60,9 +59,6 @@ public class JwtAuthentication implements Authentication {
     
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		
-		if (token == null) return Collections.emptyList();
-		
 		
 		final String[] scopes = token.getClaim("scopes").asArray(String.class);
 		List<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
