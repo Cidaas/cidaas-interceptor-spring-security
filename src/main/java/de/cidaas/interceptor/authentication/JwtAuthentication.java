@@ -60,8 +60,9 @@ public class JwtAuthentication implements Authentication {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		
-		final String[] scopes = token.getClaim("scopes").asArray(String.class);
 		List<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
+		
+		final String[] scopes = token.getClaim("scopes").asArray(String.class);
 		if (scopes != null && scopes.length > 0) {
 			for (String value : scopes) {
 				authorities.add(new SimpleGrantedAuthority(value));
@@ -69,18 +70,13 @@ public class JwtAuthentication implements Authentication {
 		}				
 		
 		final String[] roles = token.getClaim("roles").asArray(String.class);
-
 		if (roles != null && roles.length > 0) {
 			for (String value : roles) {
 				authorities.add(new SimpleGrantedAuthority("ROLE_"+value));
 			}
 		}
 		
-		if(authorities!=null && authorities.size() > 0) {
-			return authorities;	
-		}else {
-			return new ArrayList<GrantedAuthority>();
-		}
+		return authorities;
 	}
 	
     public static JwtAuthentication usingToken(String token) {
