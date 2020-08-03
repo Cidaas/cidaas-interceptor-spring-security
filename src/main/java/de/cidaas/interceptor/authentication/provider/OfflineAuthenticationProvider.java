@@ -25,8 +25,6 @@ public class OfflineAuthenticationProvider implements AuthenticationProvider {
     private final String clientId;
     private final JwkProvider jwkProvider;
 
-    private long leeway = 0;
-
     public OfflineAuthenticationProvider(String clientId, String issuer, JwkProvider jwkProvider) {
     	this.clientId = clientId;
     	this.issuer = issuer;
@@ -53,11 +51,6 @@ public class OfflineAuthenticationProvider implements AuthenticationProvider {
         }
     }
 
-    public OfflineAuthenticationProvider withJwtVerifierLeeway(long leeway) {
-        this.leeway = leeway;
-        return this;
-    }
-
     private JWTVerifier jwtVerifier(JwtAuthentication authentication) throws AuthenticationException {
 
         final String kid = authentication.getCredentials().getKeyId();
@@ -70,7 +63,7 @@ public class OfflineAuthenticationProvider implements AuthenticationProvider {
         }
         try {
             final Jwk jwk = jwkProvider.get(kid);
-            return providerForRS256((RSAPublicKey) jwk.getPublicKey(), issuer, clientId, leeway);
+            return providerForRS256((RSAPublicKey) jwk.getPublicKey(), issuer, clientId);
         } catch (SigningKeyNotFoundException e) {
             throw new AuthenticationServiceException("Could not retrieve jwks from issuer", e);
         } catch (InvalidPublicKeyException e) {
@@ -80,11 +73,10 @@ public class OfflineAuthenticationProvider implements AuthenticationProvider {
         }
     }
 
-    private static JWTVerifier providerForRS256(RSAPublicKey publicKey, String issuer, String audience, long leeway) {
+    private static JWTVerifier providerForRS256(RSAPublicKey publicKey, String issuer, String audience) {
         return JWT.require(Algorithm.RSA256(publicKey, null))
                 .withIssuer(issuer)
                 .withAudience(audience)
-                .acceptLeeway(leeway)
                 .build();
     }
 }
