@@ -2,32 +2,69 @@ package de.cidaas.interceptor.authentication;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import de.cidaas.jwt.JWT;
-import de.cidaas.jwt.JWTVerifier;
-import de.cidaas.jwt.exceptions.JWTVerificationException;
+import de.cidaas.jwt.exceptions.JWTDecodeException;
 import de.cidaas.jwt.interfaces.DecodedJWT;
 
 @SuppressWarnings("serial")
 public class JwtAuthentication implements Authentication {
+	
+	private static Logger logger = LoggerFactory.getLogger(JwtAuthentication.class);
 
-	private final DecodedJWT decoded;
+	private final DecodedJWT token;
 	private boolean authenticated;
 
-	public JwtAuthentication(String token, JWTVerifier verifier) throws JWTVerificationException {
-		this.decoded = verifier == null ? JWT.decode(token) : verifier.verify(token);
-		this.authenticated = verifier != null;
+	public JwtAuthentication(DecodedJWT token) {
+		this.token = token;
+		this.authenticated = false;
 	}
 
 	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
+	public DecodedJWT getCredentials() {
+		return token;
+	}
 
-		final String[] scopes = decoded.getClaim("scopes").asArray(String.class);
+	@Override
+	public DecodedJWT getDetails() {
+		return null;
+	}
+
+	@Override
+	public Object getPrincipal() {
+		return token.getSubject();
+	}
+
+	@Override
+	public String getName() {
+		return token.getSubject();
+	}
+	
+	@Override
+	public boolean isAuthenticated() {
+		return authenticated;
+	}
+
+	@Override
+	public void setAuthenticated(boolean isAuthenticated) {
+		this.authenticated = isAuthenticated;
+	}
+    
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		
+		if (token == null) return Collections.emptyList();
+		
+		
+		final String[] scopes = token.getClaim("scopes").asArray(String.class);
 		List<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
 		if (scopes != null && scopes.length > 0) {
 			for (String value : scopes) {
@@ -35,7 +72,7 @@ public class JwtAuthentication implements Authentication {
 			}
 		}				
 		
-		final String[] roles = decoded.getClaim("roles").asArray(String.class);
+		final String[] roles = token.getClaim("roles").asArray(String.class);
 
 		if (roles != null && roles.length > 0) {
 			for (String value : roles) {
@@ -48,40 +85,19 @@ public class JwtAuthentication implements Authentication {
 		}else {
 			return new ArrayList<GrantedAuthority>();
 		}
-		
 	}
-
-	@Override
-	public Object getCredentials() {
-		return decoded.getToken();
-	}
-
-	@Override
-	public Object getDetails() {
-		return decoded;
-	}
-
-	@Override
-	public Object getPrincipal() {
-		return decoded.getSubject();
-	}
-
-	@Override
-	public boolean isAuthenticated() {
-		return authenticated;
-	}
-
-	@Override
-	public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
-		if (isAuthenticated) {
-			throw new IllegalArgumentException(
-					"Must create a new instance to specify that the authentication is valid");
-		}
-		this.authenticated = false;
-	}
-
-	@Override
-	public String getName() {
-		return decoded.getSubject();
-	}
+	
+    public static JwtAuthentication usingToken(String token) {
+        if (token == null) {
+            logger.debug("No token was provided to build {}", JwtAuthentication.class.getName());
+            return null;
+        }
+        try {
+            DecodedJWT jwt = JWT.decode(token);
+            return new JwtAuthentication(jwt);
+        } catch (JWTDecodeException e) {
+            logger.debug("Failed to decode token as jwt", e);
+            return null;
+        }
+    }
 }

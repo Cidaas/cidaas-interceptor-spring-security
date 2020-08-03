@@ -12,7 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpRequestResponseHolder;
 import org.springframework.security.web.context.SecurityContextRepository;
 
-import de.cidaas.interceptor.authentication.JwtPreAuthentication;
+import de.cidaas.interceptor.authentication.JwtAuthentication;
 
 public class BearerSecurityContextRepository implements SecurityContextRepository {
     private final static Logger logger = LoggerFactory.getLogger(BearerSecurityContextRepository.class);
@@ -21,7 +21,7 @@ public class BearerSecurityContextRepository implements SecurityContextRepositor
     public SecurityContext loadContext(HttpRequestResponseHolder requestResponseHolder) {
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         String token = tokenFromRequest(requestResponseHolder.getRequest());
-        Authentication authentication = JwtPreAuthentication.usingToken(token);
+        Authentication authentication = JwtAuthentication.usingToken(token);
         if (authentication != null) {
             context.setAuthentication(authentication);
             logger.debug("Found bearer token in request. Saving it in SecurityContext");

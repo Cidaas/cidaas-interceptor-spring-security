@@ -2,8 +2,6 @@ package de.cidaas.interceptor.authentication.provider;
 
 import java.security.interfaces.RSAPublicKey;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -11,7 +9,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 
 import de.cidaas.interceptor.authentication.JwtAuthentication;
-import de.cidaas.interceptor.authentication.JwtPreAuthentication;
 import de.cidaas.jwk.InvalidPublicKeyException;
 import de.cidaas.jwk.Jwk;
 import de.cidaas.jwk.JwkException;
@@ -23,8 +20,6 @@ import de.cidaas.jwt.algorithms.Algorithm;
 import de.cidaas.jwt.exceptions.JWTVerificationException;
 
 public class OfflineAuthenticationProvider implements AuthenticationProvider {
-
-    private static Logger logger = LoggerFactory.getLogger(OfflineAuthenticationProvider.class);
 
     private final byte[] secret;
     private final String issuer;
@@ -50,7 +45,7 @@ public class OfflineAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return JwtPreAuthentication.class.equals(authentication);
+        return JwtAuthentication.class.equals(authentication);
     }
 
     @Override
@@ -59,11 +54,13 @@ public class OfflineAuthenticationProvider implements AuthenticationProvider {
             return null;
         }
 
-        JwtPreAuthentication jwt = (JwtPreAuthentication) authentication;
+        JwtAuthentication jwt = (JwtAuthentication) authentication;
+        
         try {
         	JWTVerifier jwtVerifier = jwtVerifier(jwt);
-        	final Authentication jwtAuth = new JwtAuthentication(jwt.getToken(), jwtVerifier);
-            logger.info("Authenticated with jwt with scopes {}", jwtAuth.getAuthorities());
+        	final Authentication jwtAuth = new JwtAuthentication(jwt.getDetails());
+        	jwtVerifier.verify(jwt.getCredentials().getTokenAsString());
+        	jwtAuth.setAuthenticated(true);
             return jwtAuth;
         } catch (JWTVerificationException e) {
             throw new BadCredentialsException("Not a valid token", e);
@@ -75,11 +72,13 @@ public class OfflineAuthenticationProvider implements AuthenticationProvider {
         return this;
     }
 
-    private JWTVerifier jwtVerifier(JwtPreAuthentication authentication) throws AuthenticationException {
+    private JWTVerifier jwtVerifier(JwtAuthentication authentication) throws AuthenticationException {
         if (secret != null) {
             return providerForHS256(secret, issuer, clientId, leeway);
         }
-        final String kid = authentication.getKeyId();
+        
+        final String kid = authentication.getCredentials().getKeyId();
+        
         if (kid == null) {
             throw new BadCredentialsException("No kid found in jwt");
         }
