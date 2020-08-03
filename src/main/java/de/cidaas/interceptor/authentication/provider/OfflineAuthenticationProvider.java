@@ -41,7 +41,9 @@ public class OfflineAuthenticationProvider implements AuthenticationProvider {
         try {
         	JwtAuthentication jwt = (JwtAuthentication) authentication;
         	
-        	JWTVerifier jwtVerifier = jwtVerifier(jwt.getCredentials().getKeyId());
+        	RSAPublicKey publicKey = getPublicKeyForKID(jwt.getCredentials().getKeyId());
+        	
+        	JWTVerifier jwtVerifier = jwtVerifier(publicKey);
         	jwtVerifier.verify(jwt.getCredentials().getTokenAsString());
         	
         	jwt.setAuthenticated(true);
@@ -50,9 +52,8 @@ public class OfflineAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("Not a valid token", e);
         }
     }
-
-    private JWTVerifier jwtVerifier(String kid) throws AuthenticationException {
-
+    
+    private RSAPublicKey getPublicKeyForKID(String kid) {
         if (kid == null) {
             throw new BadCredentialsException("No kid found in jwt");
         }
@@ -61,14 +62,9 @@ public class OfflineAuthenticationProvider implements AuthenticationProvider {
             throw new AuthenticationServiceException("Missing jwk provider");
         }
         
-        try {
-            final Jwk jwk = jwkProvider.get(kid);
-            
-            return JWT.require(Algorithm.RSA256((RSAPublicKey) jwk.getPublicKey(), null))
-            		.withIssuer(issuer)
-            		.withAudience(clientId)
-            		.build();
-            
+		try {
+			Jwk jwk = jwkProvider.get(kid);
+			return (RSAPublicKey) jwk.getPublicKey();
         } catch (SigningKeyNotFoundException e) {
             throw new AuthenticationServiceException("Could not retrieve jwks from issuer", e);
         } catch (InvalidPublicKeyException e) {
@@ -76,5 +72,12 @@ public class OfflineAuthenticationProvider implements AuthenticationProvider {
         } catch (JwkException e) {
             throw new AuthenticationServiceException("Cannot authenticate with jwt", e);
         }
+    }
+
+    private JWTVerifier jwtVerifier(RSAPublicKey publicKey) throws AuthenticationException {
+        return JWT.require(Algorithm.RSA256(publicKey, null))
+        		.withIssuer(issuer)
+        		.withAudience(clientId)
+        		.build();
     }
 }
