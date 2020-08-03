@@ -33,9 +33,8 @@ public class JwtAuthenticationProviderTest  {
 	
 	@Before
 	public void setUp() {
-		byte[] byteArray = {};
 		
-		 authenticationProvider = new OfflineAuthenticationProvider("mock", "mock", byteArray);
+//		 authenticationProvider = new OfflineAuthenticationProvider("mock", "mock", provider);
 		// provider = mock(JwkProvider.class);
 		// authenticationProvider2 = new JwtAuthenticationProvider(provider, "mock", "mock");
 		 authentication = mock(Authentication.class);

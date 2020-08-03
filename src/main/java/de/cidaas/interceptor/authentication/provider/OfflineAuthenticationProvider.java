@@ -21,26 +21,16 @@ import de.cidaas.jwt.exceptions.JWTVerificationException;
 
 public class OfflineAuthenticationProvider implements AuthenticationProvider {
 
-    private final byte[] secret;
     private final String issuer;
     private final String clientId;
     private final JwkProvider jwkProvider;
 
     private long leeway = 0;
 
-    public OfflineAuthenticationProvider(String clientId, String issuer, byte[] secret) {
-    	this.clientId = clientId;
-    	this.issuer = issuer;
-    	this.secret = secret;
-        this.jwkProvider = null;
-    }
-
     public OfflineAuthenticationProvider(String clientId, String issuer, JwkProvider jwkProvider) {
     	this.clientId = clientId;
     	this.issuer = issuer;
     	this.jwkProvider = jwkProvider;
-        this.secret = null;
-        
     }
 
     @Override
@@ -69,10 +59,7 @@ public class OfflineAuthenticationProvider implements AuthenticationProvider {
     }
 
     private JWTVerifier jwtVerifier(JwtAuthentication authentication) throws AuthenticationException {
-        if (secret != null) {
-            return providerForHS256(secret, issuer, clientId, leeway);
-        }
-        
+
         final String kid = authentication.getCredentials().getKeyId();
         
         if (kid == null) {
@@ -95,14 +82,6 @@ public class OfflineAuthenticationProvider implements AuthenticationProvider {
 
     private static JWTVerifier providerForRS256(RSAPublicKey publicKey, String issuer, String audience, long leeway) {
         return JWT.require(Algorithm.RSA256(publicKey, null))
-                .withIssuer(issuer)
-                .withAudience(audience)
-                .acceptLeeway(leeway)
-                .build();
-    }
-
-    private static JWTVerifier providerForHS256(byte[] secret, String issuer, String audience, long leeway) {
-        return JWT.require(Algorithm.HMAC256(secret))
                 .withIssuer(issuer)
                 .withAudience(audience)
                 .acceptLeeway(leeway)

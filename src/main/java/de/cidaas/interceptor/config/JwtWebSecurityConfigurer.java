@@ -1,6 +1,5 @@
 package de.cidaas.interceptor.config;
 
-import org.apache.commons.codec.binary.Base64;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -29,22 +28,11 @@ public class JwtWebSecurityConfigurer {
      * @param issuer of the token for this API and must match the {@code iss} value in the token
      * @return JwtWebSecurityConfigurer for further configuration
      */
-    public static JwtWebSecurityConfigurer offlineValidationForRS256(String clientId, String issuer) {
+    public static JwtWebSecurityConfigurer offlineValidation(String clientId, String issuer) {
         final JwkProvider jwkProvider = new JwkProviderBuilder(issuer).build();
         return new JwtWebSecurityConfigurer(new OfflineAuthenticationProvider(clientId, issuer, jwkProvider));
     }
 
-    /**
-     * Configures application authorization for JWT signed with HS256
-     * @param clientId identifier of the API and must match the {@code aud} value in the token
-     * @param issuer of the token for this API and must match the {@code iss} value in the token
-     * @param secret used to sign and verify tokens encoded in Base64
-     * @return JwtWebSecurityConfigurer for further configuration
-     */
-    public static JwtWebSecurityConfigurer offlineValidationForHS256(String clientId, String issuer, String secret) {
-        return new JwtWebSecurityConfigurer(new OfflineAuthenticationProvider(clientId, issuer, new Base64(true).decode(secret)));
-    }
-    
     /**
      * Configures application authorization with the introspection API
      * @param clientId identifier of the API and must match the {@code aud} value in the token
