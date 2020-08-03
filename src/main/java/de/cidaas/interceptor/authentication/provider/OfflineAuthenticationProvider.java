@@ -58,10 +58,10 @@ public class OfflineAuthenticationProvider implements AuthenticationProvider {
         
         try {
         	JWTVerifier jwtVerifier = jwtVerifier(jwt);
-        	final Authentication jwtAuth = new JwtAuthentication(jwt.getDetails());
         	jwtVerifier.verify(jwt.getCredentials().getTokenAsString());
-        	jwtAuth.setAuthenticated(true);
-            return jwtAuth;
+        	
+        	jwt.setAuthenticated(true);
+            return jwt;
         } catch (JWTVerificationException e) {
             throw new BadCredentialsException("Not a valid token", e);
         }
