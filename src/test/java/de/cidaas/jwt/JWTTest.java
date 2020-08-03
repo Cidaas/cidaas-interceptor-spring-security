@@ -86,7 +86,7 @@ public class JWTTest {
 				+ "CLuaLVeZ3SG1x-FGHkcZWUoA4k9BRI7J8aN1H04DbxG9Zikj_NSo1pKKMWZzFb7kfmRBd98rUqyq_5GePX"
 				+ "02OB1ofBAalvKMhSa9QHD8s4E",
 				decodeJwt.getSignature());//
-		Assert.assertEquals(token,decodeJwt.getToken());
+		Assert.assertEquals(token, decodeJwt.getTokenAsString());
 	}
 	
 	
