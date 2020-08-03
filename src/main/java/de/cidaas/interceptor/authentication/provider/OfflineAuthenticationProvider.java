@@ -39,15 +39,15 @@ public class OfflineAuthenticationProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         try {
-        	JwtAuthentication jwt = (JwtAuthentication) authentication;
+        	JwtAuthentication jwtAuth = (JwtAuthentication) authentication;
         	
-        	RSAPublicKey publicKey = getPublicKeyForKID(jwt.getCredentials().getKeyId());
+        	RSAPublicKey publicKey = getPublicKeyForKID(jwtAuth.getCredentials().getKeyId());
         	
         	JWTVerifier jwtVerifier = jwtVerifier(publicKey);
-        	jwtVerifier.verify(jwt.getCredentials().getTokenAsString());
+        	jwtVerifier.verify(jwtAuth.getCredentials().getTokenAsString());
         	
-        	jwt.setAuthenticated(true);
-            return jwt;
+        	jwtAuth.setAuthenticated(true);
+            return jwtAuth;
         } catch (JWTVerificationException e) {
             throw new BadCredentialsException("Not a valid token", e);
         }
