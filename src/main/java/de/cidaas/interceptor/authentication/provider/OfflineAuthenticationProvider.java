@@ -50,10 +50,6 @@ public class OfflineAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        if (!supports(authentication.getClass())) {
-            return null;
-        }
-
         JwtAuthentication jwt = (JwtAuthentication) authentication;
         
         try {
