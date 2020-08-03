@@ -1,23 +1,18 @@
 package de.cidaas.interceptor.config;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 
 import de.cidaas.interceptor.authentication.JwtAuthentication;
-import de.cidaas.interceptor.authentication.PreAuthenticatedAuthenticationJsonWebTokenTest;
 import de.cidaas.interceptor.authentication.provider.OfflineAuthenticationProvider;
 import de.cidaas.jwk.JwkProvider;
 import de.cidaas.jwt.JWTVerifier;
 import de.cidaas.jwt.algorithms.Algorithm;
-import de.cidaas.jwt.exceptions.JWTVerificationException;
 import de.cidaas.jwt.interfaces.Clock;
 
 
@@ -27,7 +22,7 @@ public class JwtAuthenticationProviderTest  {
 	OfflineAuthenticationProvider authenticationProvider = null;
 	Authentication authentication = null;
 	Authentication jwtAuth = null;
-	PreAuthenticatedAuthenticationJsonWebTokenTest jwtAuthentication = null;
+//	PreAuthenticatedAuthenticationJsonWebTokenTest jwtAuthentication = null;
 	Algorithm algo = null;
 	Clock clock = null;
 	
@@ -45,7 +40,7 @@ public class JwtAuthenticationProviderTest  {
 		// authenticationProvider2 = new JwtAuthenticationProvider(provider, "mock", "mock");
 		 authentication = mock(Authentication.class);
 		 jwtAuth = mock(JwtAuthentication.class);
-		 jwtAuthentication = mock(PreAuthenticatedAuthenticationJsonWebTokenTest.class);
+//		 jwtAuthentication = mock(PreAuthenticatedAuthenticationJsonWebTokenTest.class);
 		 algo=  mock(Algorithm.class);
 		 clock = mock(Clock.class);
 //		 when(jwtAuthentication.verify(verifier)).thenReturn(authentication);
