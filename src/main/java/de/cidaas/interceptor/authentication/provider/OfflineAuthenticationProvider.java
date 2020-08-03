@@ -50,9 +50,9 @@ public class OfflineAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        JwtAuthentication jwt = (JwtAuthentication) authentication;
-        
         try {
+        	JwtAuthentication jwt = (JwtAuthentication) authentication;
+        	
         	JWTVerifier jwtVerifier = jwtVerifier(jwt);
         	jwtVerifier.verify(jwt.getCredentials().getTokenAsString());
         	
