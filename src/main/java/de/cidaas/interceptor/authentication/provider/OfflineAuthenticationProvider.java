@@ -41,7 +41,7 @@ public class OfflineAuthenticationProvider implements AuthenticationProvider {
         try {
         	JwtAuthentication jwt = (JwtAuthentication) authentication;
         	
-        	JWTVerifier jwtVerifier = jwtVerifier(jwt);
+        	JWTVerifier jwtVerifier = jwtVerifier(jwt.getCredentials().getKeyId());
         	jwtVerifier.verify(jwt.getCredentials().getTokenAsString());
         	
         	jwt.setAuthenticated(true);
@@ -51,19 +51,24 @@ public class OfflineAuthenticationProvider implements AuthenticationProvider {
         }
     }
 
-    private JWTVerifier jwtVerifier(JwtAuthentication authentication) throws AuthenticationException {
+    private JWTVerifier jwtVerifier(String kid) throws AuthenticationException {
 
-        final String kid = authentication.getCredentials().getKeyId();
-        
         if (kid == null) {
             throw new BadCredentialsException("No kid found in jwt");
         }
+        
         if (jwkProvider == null) {
             throw new AuthenticationServiceException("Missing jwk provider");
         }
+        
         try {
             final Jwk jwk = jwkProvider.get(kid);
-            return providerForRS256((RSAPublicKey) jwk.getPublicKey(), issuer, clientId);
+            
+            return JWT.require(Algorithm.RSA256((RSAPublicKey) jwk.getPublicKey(), null))
+            		.withIssuer(issuer)
+            		.withAudience(clientId)
+            		.build();
+            
         } catch (SigningKeyNotFoundException e) {
             throw new AuthenticationServiceException("Could not retrieve jwks from issuer", e);
         } catch (InvalidPublicKeyException e) {
@@ -71,12 +76,5 @@ public class OfflineAuthenticationProvider implements AuthenticationProvider {
         } catch (JwkException e) {
             throw new AuthenticationServiceException("Cannot authenticate with jwt", e);
         }
-    }
-
-    private static JWTVerifier providerForRS256(RSAPublicKey publicKey, String issuer, String audience) {
-        return JWT.require(Algorithm.RSA256(publicKey, null))
-                .withIssuer(issuer)
-                .withAudience(audience)
-                .build();
     }
 }
