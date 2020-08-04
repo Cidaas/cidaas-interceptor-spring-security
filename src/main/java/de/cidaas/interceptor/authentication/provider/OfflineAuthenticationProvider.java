@@ -53,7 +53,7 @@ public class OfflineAuthenticationProvider implements AuthenticationProvider {
         }
     }
     
-    private RSAPublicKey getPublicKeyForKID(String kid) {
+    public RSAPublicKey getPublicKeyForKID(String kid) {
         if (kid == null) {
             throw new BadCredentialsException("No kid found in jwt");
         }
