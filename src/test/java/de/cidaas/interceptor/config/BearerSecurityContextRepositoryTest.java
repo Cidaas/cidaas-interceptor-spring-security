@@ -1,5 +1,6 @@
 package de.cidaas.interceptor.config;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -78,5 +79,18 @@ public class BearerSecurityContextRepositoryTest {
 	@Test
 	public void testUsingNullValue() {
 		assertNull(bearerSecurityContextRepository.creatAuthenticationUsingToken(null));
+	}
+	
+	
+	@Test
+	public void testTokenExtraction() {
+		when(request.getHeader("Authorization")).thenReturn("bearer " + BaseSpringInterceptorTest.getTokenWithRolesAndScopes());
+		assertEquals(bearerSecurityContextRepository.getTokenFromRequest(request), BaseSpringInterceptorTest.getTokenWithRolesAndScopes());
+		
+		when(request.getHeader("Authorization")).thenReturn("WRONG " + BaseSpringInterceptorTest.getTokenWithRolesAndScopes());
+		assertNull(bearerSecurityContextRepository.getTokenFromRequest(request));
+		
+		when(request.getHeader("Authorization")).thenReturn("bearer-" + BaseSpringInterceptorTest.getTokenWithRolesAndScopes());
+		assertNull(bearerSecurityContextRepository.getTokenFromRequest(request));
 	}
 }
