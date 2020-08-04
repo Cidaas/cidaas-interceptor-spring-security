@@ -1,63 +1,55 @@
 package de.cidaas.interceptor.authentication.provider;
 
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.util.HashMap;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.Authentication;
 
+import de.cidaas.interceptor.TokenHelperTest;
 import de.cidaas.interceptor.authentication.JwtAuthentication;
-import de.cidaas.interceptor.authentication.provider.OfflineAuthenticationProvider;
+import de.cidaas.jwk.Jwk;
+import de.cidaas.jwk.JwkException;
 import de.cidaas.jwk.JwkProvider;
-import de.cidaas.jwt.JWTVerifier;
-import de.cidaas.jwt.algorithms.Algorithm;
-import de.cidaas.jwt.interfaces.Clock;
+import de.cidaas.jwt.JWT;
+import de.cidaas.jwt.interfaces.DecodedJWT;
 
+@RunWith(MockitoJUnitRunner.class)
+public class OfflineAuthenticationProviderTest {
 
-public class OfflineAuthenticationProviderTest  {
-	
-	JwkProvider provider = null;
+	@Mock
+	JwkProvider provider;
+
 	OfflineAuthenticationProvider authenticationProvider = null;
-	Authentication authentication = null;
-	Authentication jwtAuth = null;
-//	PreAuthenticatedAuthenticationJsonWebTokenTest jwtAuthentication = null;
-	Algorithm algo = null;
-	Clock clock = null;
-	
-	@org.powermock.core.classloader.annotations.Mock
-	private JWTVerifier verifier;
-	
-	
-	
-	@Before
-	public void setUp() {
-		
-//		 authenticationProvider = new OfflineAuthenticationProvider("mock", "mock", provider);
-		// provider = mock(JwkProvider.class);
-		// authenticationProvider2 = new JwtAuthenticationProvider(provider, "mock", "mock");
-		 authentication = mock(Authentication.class);
-		 jwtAuth = mock(JwtAuthentication.class);
-//		 jwtAuthentication = mock(PreAuthenticatedAuthenticationJsonWebTokenTest.class);
-		 algo=  mock(Algorithm.class);
-		 clock = mock(Clock.class);
-//		 when(jwtAuthentication.verify(verifier)).thenReturn(authentication);
-//		 when(jwtAuthentication.verify(null)).thenReturn(authentication);
-	}
+	JwtAuthentication jwtAuth = null;
 	
 	@Test
-	public void testAuthenticate() {
-//		jwtAuthentication = (JwtAuthentication) jwtAuth;
-//		when(jwtAuthentication.verify(Mockito.any(JWTVerifier.class))).thenReturn(authentication);
-		assertNotNull(authenticationProvider.authenticate(jwtAuth));
+	@SuppressWarnings("deprecation")
+	public void testAuthenticatenWithValidToken() throws JwkException {
+		authenticationProvider = new OfflineAuthenticationProvider(TokenHelperTest.getClientId(), TokenHelperTest.getIssuer(), provider);
+		DecodedJWT jwt = JWT.decode(TokenHelperTest.getValidToken());
+		jwtAuth = new JwtAuthentication(jwt);
 		
+		when(provider.get(jwt.getKeyId())).thenReturn(new Jwk(TokenHelperTest.getKId(), "RSA", "RS256", "sig", "", "", null, "", TokenHelperTest.getPublicKeyAsHashMap()));
+
+		assertNotNull(authenticationProvider.authenticate(jwtAuth));
 	}
+	
 	@Test(expected = BadCredentialsException.class)
-	public void testAuthenticateException() {
-//		jwtAuthentication = (JwtAuthentication) jwtAuth;
-//		Mockito.doThrow(JWTVerificationException.class).when(jwtAuthentication).verify(Mockito.any(JWTVerifier.class));
-		assertNotNull(authenticationProvider.authenticate(jwtAuth));
+	@SuppressWarnings("deprecation")
+	public void testAuthenticatenWithExpiredToken() throws JwkException {
+		authenticationProvider = new OfflineAuthenticationProvider(TokenHelperTest.getClientId(), TokenHelperTest.getIssuer(), provider);
+		DecodedJWT jwt = JWT.decode(TokenHelperTest.getExpiredToken());
+		jwtAuth = new JwtAuthentication(jwt);
 		
+		when(provider.get(jwt.getKeyId())).thenReturn(new Jwk(TokenHelperTest.getKId(), "RSA", "RS256", "sig", "", "", null, "", TokenHelperTest.getPublicKeyAsHashMap()));
+
+		assertNotNull(authenticationProvider.authenticate(jwtAuth));
 	}
 }
