@@ -17,8 +17,6 @@ import org.junit.Test;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.web.context.HttpRequestResponseHolder;
 
-import de.cidaas.interceptor.authentication.JwtAuthentication;
-
 public class BearerSecurityContextRepositoryTest {
 	
 	HttpServletRequest request = null;
