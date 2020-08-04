@@ -1,4 +1,4 @@
-package de.cidaas.interceptor.config;
+package de.cidaas.interceptor.authentication.provider;
 
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
@@ -16,7 +16,7 @@ import de.cidaas.jwt.algorithms.Algorithm;
 import de.cidaas.jwt.interfaces.Clock;
 
 
-public class JwtAuthenticationProviderTest  {
+public class OfflineAuthenticationProviderTest  {
 	
 	JwkProvider provider = null;
 	OfflineAuthenticationProvider authenticationProvider = null;
