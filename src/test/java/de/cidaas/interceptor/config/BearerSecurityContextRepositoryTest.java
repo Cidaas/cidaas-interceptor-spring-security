@@ -1,6 +1,7 @@
 package de.cidaas.interceptor.config;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -15,6 +16,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.web.context.HttpRequestResponseHolder;
+
+import de.cidaas.interceptor.authentication.JwtAuthentication;
 
 public class BearerSecurityContextRepositoryTest {
 	
@@ -105,5 +108,15 @@ public class BearerSecurityContextRepositoryTest {
 		
 	}
 
-
+	@Test
+	public void testUsingInvalidToken() {
+		BearerSecurityContextRepository bearerSecurityContextRepository = new BearerSecurityContextRepository();
+		assertNull(bearerSecurityContextRepository.creatAuthenticationUsingToken("abc.abc.abc"));
+	}
+	
+	@Test
+	public void testUsingNullValue() {
+		BearerSecurityContextRepository bearerSecurityContextRepository = new BearerSecurityContextRepository();
+		assertNull(bearerSecurityContextRepository.creatAuthenticationUsingToken(null));
+	}
 }
