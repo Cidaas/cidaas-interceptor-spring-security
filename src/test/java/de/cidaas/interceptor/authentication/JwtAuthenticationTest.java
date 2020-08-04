@@ -1,11 +1,13 @@
 package de.cidaas.interceptor.authentication;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Test;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import de.cidaas.jwt.JWT;
 import de.cidaas.jwt.interfaces.DecodedJWT;
@@ -26,15 +28,46 @@ public class JwtAuthenticationTest {
 	}
 	
 	@Test
-	public void testUsingValidTokenWithRolesAndScopes() {
-//		JwtAuthentication jwtAuth = JwtAuthentication.creatAuthenticationUsingToken(getTokenWithRolesAndScopes());
+	@SuppressWarnings("unchecked")
+	public void testGetAuthoritiesWithoutRoles() {
+		DecodedJWT jwt = JWT.decode(getTokenWithoutRoles());
 		
-//		DecodedJWT jwt = JWT.decode(getTokenWithRolesAndScopes());
-//		
-//		assertFalse(jwtAuth.isAuthenticated());
-//		assertEquals(jwtAuth.getName(), jwt.getSubject());
-//		assertEquals(jwtAuth.getPrincipal(), jwt.getSubject());
-		//Compare objects...
-//		assertArrayEquals(new String[] {"cidaas:userinfo", "cidaas:write", "cidaas:read", "offline_access", "ROLE_USER", "ROLE_BOSCH_ADMIN", "ROLE_BOSCH_SUPER_ADMIN", "ROLE_BOSCH_USER"}, jwtAuth.getAuthorities());
+		JwtAuthentication jwtAuth = new JwtAuthentication(jwt);
+		
+		assertFalse(jwtAuth.isAuthenticated());
+		assertEquals(jwtAuth.getName(), jwt.getSubject());
+		assertEquals(jwtAuth.getPrincipal(), jwt.getSubject());
+		assertEquals(jwtAuth.getCredentials(), jwt);
+		
+		
+		List<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
+		authorities.add(new SimpleGrantedAuthority("Testscope"));
+		
+        assertEquals((List<SimpleGrantedAuthority>) jwtAuth.getAuthorities(), authorities);
+	}
+	
+	@Test
+	@SuppressWarnings("unchecked")
+	public void testGetAuthoritiesWithRolesAndScopes() {
+		DecodedJWT jwt = JWT.decode(getTokenWithRolesAndScopes());
+		
+		JwtAuthentication jwtAuth = new JwtAuthentication(jwt);
+		
+		assertFalse(jwtAuth.isAuthenticated());
+		assertEquals(jwtAuth.getName(), jwt.getSubject());
+		assertEquals(jwtAuth.getPrincipal(), jwt.getSubject());
+		assertEquals(jwtAuth.getCredentials(), jwt);
+		
+		List<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
+		authorities.add(new SimpleGrantedAuthority("cidaas:userinfo"));
+		authorities.add(new SimpleGrantedAuthority("cidaas:write"));
+		authorities.add(new SimpleGrantedAuthority("cidaas:read"));
+		authorities.add(new SimpleGrantedAuthority("offline_access"));
+		authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+		authorities.add(new SimpleGrantedAuthority("ROLE_BOSCH_ADMIN"));
+		authorities.add(new SimpleGrantedAuthority("ROLE_BOSCH_SUPER_ADMIN"));
+		authorities.add(new SimpleGrantedAuthority("ROLE_BOSCH_USER"));
+		
+        assertEquals((List<SimpleGrantedAuthority>) jwtAuth.getAuthorities(), authorities);
 	}
 }
