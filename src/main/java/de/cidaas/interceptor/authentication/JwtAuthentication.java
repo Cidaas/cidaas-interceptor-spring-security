@@ -4,25 +4,19 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import de.cidaas.jwt.JWT;
-import de.cidaas.jwt.exceptions.JWTDecodeException;
 import de.cidaas.jwt.interfaces.DecodedJWT;
 
 @SuppressWarnings("serial")
 public class JwtAuthentication implements Authentication {
 	
-	private static Logger logger = LoggerFactory.getLogger(JwtAuthentication.class);
-
 	private final DecodedJWT token;
 	private boolean authenticated;
 
-	private JwtAuthentication(DecodedJWT token) {
+	public JwtAuthentication(DecodedJWT token) {
 		this.token = token;
 		this.authenticated = false;
 	}
@@ -38,7 +32,7 @@ public class JwtAuthentication implements Authentication {
 	}
 
 	@Override
-	public Object getPrincipal() {
+	public String getPrincipal() {
 		return token.getSubject();
 	}
 
@@ -78,18 +72,4 @@ public class JwtAuthentication implements Authentication {
 		
 		return authorities;
 	}
-	
-    public static JwtAuthentication usingToken(String token) {
-        if (token == null) {
-            logger.debug("No token was provided to build {}", JwtAuthentication.class.getName());
-            return null;
-        }
-        try {
-            DecodedJWT jwt = JWT.decode(token);
-            return new JwtAuthentication(jwt);
-        } catch (JWTDecodeException e) {
-            logger.debug("Failed to decode token as jwt", e);
-            return null;
-        }
-    }
 }
