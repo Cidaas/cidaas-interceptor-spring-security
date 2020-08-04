@@ -15,7 +15,7 @@ import org.junit.Test;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.web.context.HttpRequestResponseHolder;
 
-import de.cidaas.interceptor.BaseSpringInterceptorTest;
+import de.cidaas.interceptor.TokenHelperTest;
 
 public class BearerSecurityContextRepositoryTest {
 	
@@ -36,7 +36,7 @@ public class BearerSecurityContextRepositoryTest {
 	
 	@Test
 	public void testLoadContext() {
-		String  headerValue = "bearer " + BaseSpringInterceptorTest.getTokenWithRolesAndScopes();
+		String  headerValue = "bearer " + TokenHelperTest.getTokenWithRolesAndScopes();
 		when(request.getHeader("Authorization")).thenReturn(headerValue);
 		
 		assertNotNull(bearerSecurityContextRepository.loadContext(reqRespHolder));
@@ -54,7 +54,7 @@ public class BearerSecurityContextRepositoryTest {
 	
 	@Test
 	public void testLoadContextNegativeCase2() {
-		String  headerValue = "bearer-" + BaseSpringInterceptorTest.getTokenWithRolesAndScopes();
+		String  headerValue = "bearer-" + TokenHelperTest.getTokenWithRolesAndScopes();
 		when(request.getHeader("Authorization")).thenReturn(headerValue);
 		
 		SecurityContext context = bearerSecurityContextRepository.loadContext(reqRespHolder);
@@ -65,7 +65,7 @@ public class BearerSecurityContextRepositoryTest {
 	
 	@Test
 	public void testContainContext() {
-		String  headerValue = "bearer " + BaseSpringInterceptorTest.getTokenWithRolesAndScopes();
+		String  headerValue = "bearer " + TokenHelperTest.getTokenWithRolesAndScopes();
 		when(request.getHeader("Authorization")).thenReturn(headerValue);
 		
 		assertTrue(bearerSecurityContextRepository.containsContext(request));
@@ -84,13 +84,13 @@ public class BearerSecurityContextRepositoryTest {
 	
 	@Test
 	public void testTokenExtraction() {
-		when(request.getHeader("Authorization")).thenReturn("bearer " + BaseSpringInterceptorTest.getTokenWithRolesAndScopes());
-		assertEquals(bearerSecurityContextRepository.getTokenFromRequest(request), BaseSpringInterceptorTest.getTokenWithRolesAndScopes());
+		when(request.getHeader("Authorization")).thenReturn("bearer " + TokenHelperTest.getTokenWithRolesAndScopes());
+		assertEquals(bearerSecurityContextRepository.getTokenFromRequest(request), TokenHelperTest.getTokenWithRolesAndScopes());
 		
-		when(request.getHeader("Authorization")).thenReturn("WRONG " + BaseSpringInterceptorTest.getTokenWithRolesAndScopes());
+		when(request.getHeader("Authorization")).thenReturn("WRONG " + TokenHelperTest.getTokenWithRolesAndScopes());
 		assertNull(bearerSecurityContextRepository.getTokenFromRequest(request));
 		
-		when(request.getHeader("Authorization")).thenReturn("bearer-" + BaseSpringInterceptorTest.getTokenWithRolesAndScopes());
+		when(request.getHeader("Authorization")).thenReturn("bearer-" + TokenHelperTest.getTokenWithRolesAndScopes());
 		assertNull(bearerSecurityContextRepository.getTokenFromRequest(request));
 	}
 }
