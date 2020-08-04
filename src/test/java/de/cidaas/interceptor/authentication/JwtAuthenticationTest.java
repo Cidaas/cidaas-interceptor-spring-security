@@ -9,7 +9,7 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import de.cidaas.interceptor.BaseSpringInterceptorTest;
+import de.cidaas.interceptor.TokenHelperTest;
 import de.cidaas.jwt.JWT;
 import de.cidaas.jwt.interfaces.DecodedJWT;
 
@@ -18,7 +18,7 @@ public class JwtAuthenticationTest {
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testGetAuthoritiesWithoutRoles() {
-		DecodedJWT jwt = JWT.decode(BaseSpringInterceptorTest.getTokenWithoutRoles());
+		DecodedJWT jwt = JWT.decode(TokenHelperTest.getTokenWithoutRoles());
 		
 		JwtAuthentication jwtAuth = new JwtAuthentication(jwt);
 		
@@ -37,7 +37,7 @@ public class JwtAuthenticationTest {
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testGetAuthoritiesWithRolesAndScopes() {
-		DecodedJWT jwt = JWT.decode(BaseSpringInterceptorTest.getTokenWithRolesAndScopes());
+		DecodedJWT jwt = JWT.decode(TokenHelperTest.getTokenWithRolesAndScopes());
 		
 		JwtAuthentication jwtAuth = new JwtAuthentication(jwt);
 		
