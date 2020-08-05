@@ -13,12 +13,12 @@ import org.springframework.security.authentication.AuthenticationServiceExceptio
 import org.springframework.security.authentication.BadCredentialsException;
 
 import de.cidaas.interceptor.TokenHelperTest;
-import de.cidaas.interceptor.authentication.JwtAuthentication;
 import de.cidaas.jwk.Jwk;
 import de.cidaas.jwk.JwkException;
 import de.cidaas.jwk.JwkProvider;
 import de.cidaas.jwt.JWT;
 import de.cidaas.jwt.interfaces.DecodedJWT;
+import de.cidaas.model.JwtAuthentication;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OfflineAuthenticationProviderTest {

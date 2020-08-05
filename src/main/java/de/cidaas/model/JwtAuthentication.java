@@ -1,4 +1,4 @@
-package de.cidaas.interceptor.authentication;
+package de.cidaas.model;
 
 import java.util.ArrayList;
 import java.util.Collection;

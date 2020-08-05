@@ -8,7 +8,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 
-import de.cidaas.interceptor.authentication.JwtAuthentication;
 import de.cidaas.jwk.InvalidPublicKeyException;
 import de.cidaas.jwk.Jwk;
 import de.cidaas.jwk.JwkException;
@@ -18,6 +17,7 @@ import de.cidaas.jwt.JWT;
 import de.cidaas.jwt.JWTVerifier;
 import de.cidaas.jwt.algorithms.Algorithm;
 import de.cidaas.jwt.exceptions.JWTVerificationException;
+import de.cidaas.model.JwtAuthentication;
 
 public class OfflineAuthenticationProvider implements AuthenticationProvider {
 

@@ -4,7 +4,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 
-import de.cidaas.interceptor.authentication.JwtAuthentication;
+import de.cidaas.model.JwtAuthentication;
 
 public class IntrospectionAuthenticationProvider implements AuthenticationProvider{
 		

@@ -12,6 +12,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import de.cidaas.interceptor.TokenHelperTest;
 import de.cidaas.jwt.JWT;
 import de.cidaas.jwt.interfaces.DecodedJWT;
+import de.cidaas.model.JwtAuthentication;
 
 public class JwtAuthenticationTest {
 

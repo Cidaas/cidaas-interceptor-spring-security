@@ -12,10 +12,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpRequestResponseHolder;
 import org.springframework.security.web.context.SecurityContextRepository;
 
-import de.cidaas.interceptor.authentication.JwtAuthentication;
 import de.cidaas.jwt.JWT;
 import de.cidaas.jwt.exceptions.JWTDecodeException;
 import de.cidaas.jwt.interfaces.DecodedJWT;
+import de.cidaas.model.JwtAuthentication;
 
 public class BearerSecurityContextRepository implements SecurityContextRepository {
     private final static Logger logger = LoggerFactory.getLogger(BearerSecurityContextRepository.class);
