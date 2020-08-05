@@ -1,4 +1,4 @@
-package de.cidaas.interceptor.config;
+package de.cidaas.interceptor;
 
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -6,17 +6,20 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 
 import de.cidaas.interceptor.authentication.provider.IntrospectionAuthenticationProvider;
 import de.cidaas.interceptor.authentication.provider.OfflineAuthenticationProvider;
+import de.cidaas.interceptor.config.BearerSecurityContextRepository;
+import de.cidaas.interceptor.config.JwtAccessDeniedHandler;
+import de.cidaas.interceptor.config.JwtAuthenticationEntryPoint;
 import de.cidaas.jwk.JwkProvider;
 import de.cidaas.jwk.JwkProviderBuilder;
 
 /**
  * Utility class for configuring Security for your Spring API
  */
-public class JwtWebSecurityConfigurer {
+public class JwtSpringInterceptor {
 
     final AuthenticationProvider provider;
 
-    private JwtWebSecurityConfigurer(AuthenticationProvider authenticationProvider) {
+    private JwtSpringInterceptor(AuthenticationProvider authenticationProvider) {
         this.provider = authenticationProvider;
     }
 
@@ -28,9 +31,9 @@ public class JwtWebSecurityConfigurer {
      * @param issuer of the token for this API and must match the {@code iss} value in the token
      * @return JwtWebSecurityConfigurer for further configuration
      */
-    public static JwtWebSecurityConfigurer offlineValidation(String clientId, String issuer) {
+    public static JwtSpringInterceptor offlineValidation(String clientId, String issuer) {
         final JwkProvider jwkProvider = new JwkProviderBuilder(issuer).build();
-        return new JwtWebSecurityConfigurer(new OfflineAuthenticationProvider(clientId, issuer, jwkProvider));
+        return new JwtSpringInterceptor(new OfflineAuthenticationProvider(clientId, issuer, jwkProvider));
     }
 
     /**
@@ -40,8 +43,8 @@ public class JwtWebSecurityConfigurer {
      * @param clientSecret used to identify the client
      * @return JwtWebSecurityConfigurer for further configuration
      */
-    public static JwtWebSecurityConfigurer introspectionValidation(String clientId, String issuer, String clientSecret) {
-        return new JwtWebSecurityConfigurer(new IntrospectionAuthenticationProvider(clientId, issuer, clientSecret));
+    public static JwtSpringInterceptor introspectionValidation(String clientId, String issuer, String clientSecret) {
+        return new JwtSpringInterceptor(new IntrospectionAuthenticationProvider(clientId, issuer, clientSecret));
     }
 
     /**
