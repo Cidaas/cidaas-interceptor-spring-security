@@ -138,7 +138,6 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<jackson.version>2.9.9.2</jackson.version>
 		<spring-security.version>5.3.2.RELEASE</spring-security.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -149,7 +148,7 @@
 		<dependency>
 			<groupId>de.cidaas</groupId>
 			<artifactId>cidaas-java-jwt-helper</artifactId>
-			<version>0.0.2-SNAPSHOT</version>
+			<version>0.0.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -176,12 +175,6 @@
 			<artifactId>javax.servlet-api</artifactId>
 			<version>4.0.1</version>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.5.6</version>
-		</dependency>
-
 
 		<dependency>
 			<groupId>junit</groupId>
