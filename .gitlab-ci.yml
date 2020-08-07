@@ -9,7 +9,7 @@ stages:
   - deploy
   
 before_script:
-    - mkdir ~.m2
-    - "echo -n $CIM_MAVEN_M2_SETTINGS_GENERAL > ~.m2/settings.xml"
-    - "git config user.email 'devel@widas.de'"
-    - "git config user.name 'devel'"
+  - mkdir ~/.m2
+  - "echo -n $CIM_MAVEN_M2_SETTINGS_GENERAL > ~/.m2/settings.xml"
+  - "git config user.email 'devel@widas.de'"
+  - "git config user.name 'devel'"
