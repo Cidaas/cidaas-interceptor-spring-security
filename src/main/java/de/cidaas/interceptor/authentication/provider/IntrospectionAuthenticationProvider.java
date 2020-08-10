@@ -35,7 +35,7 @@ public class IntrospectionAuthenticationProvider implements AuthenticationProvid
 			JwtAuthentication jwtAuth = (JwtAuthentication) authentication;
 			
 			String token = jwtAuth.getCredentials().getTokenAsString();
-			String introspectionURI = OpenIdConfigurationLoader.getInstance().getIntrospectionURI(issuer);
+			String introspectionURI = OpenIdConfigurationLoader.getInstance().getIntrospectionURL(issuer);
 			
 			boolean isActive = jwtValidation
 								.validateWithIntrospection(token, TokenType.ACCESS.typeHint, clientId, introspectionURI)
