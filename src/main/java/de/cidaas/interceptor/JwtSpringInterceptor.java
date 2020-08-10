@@ -11,6 +11,7 @@ import de.cidaas.interceptor.config.JwtAccessDeniedHandler;
 import de.cidaas.interceptor.config.JwtAuthenticationEntryPoint;
 import de.cidaas.jwk.JwkProvider;
 import de.cidaas.jwk.JwkProviderBuilder;
+import de.cidaas.jwt.JWTValidation;
 
 /**
  * Utility class for configuring Security for your Spring API
@@ -43,8 +44,9 @@ public class JwtSpringInterceptor {
      * @param clientSecret used to identify the client
      * @return JwtWebSecurityConfigurer for further configuration
      */
-    public static JwtSpringInterceptor introspectionValidation(String clientId, String issuer, String clientSecret) {
-        return new JwtSpringInterceptor(new IntrospectionAuthenticationProvider(clientId, issuer, clientSecret));
+    public static JwtSpringInterceptor introspectionValidation(String clientId, String issuer) {
+    	final JWTValidation jwtValidation = new JWTValidation();
+        return new JwtSpringInterceptor(new IntrospectionAuthenticationProvider(clientId, issuer, jwtValidation));
     }
 
     /**

@@ -6,20 +6,21 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 
 import de.cidaas.jwt.JWTValidation;
-import de.cidaas.jwt.exceptions.JWTVerificationException;
+import de.cidaas.jwt.TokenType;
 import de.cidaas.jwt.exceptions.TokenExpiredException;
+import de.cidaas.jwt.helper.OpenIdConfigurationLoader;
 import de.cidaas.model.JwtAuthentication;
 
 public class IntrospectionAuthenticationProvider implements AuthenticationProvider {
 	
 	private final String clientId;
 	private final String issuer;
-	private final String clientSecret;
+	private final JWTValidation jwtValidation;
 	
-	public IntrospectionAuthenticationProvider(String clientId, String issuer, String clientSecret) {
+	public IntrospectionAuthenticationProvider(String clientId, String issuer, JWTValidation jwtValidation) {
 		this.clientId = clientId;
 		this.issuer = issuer;
-		this.clientSecret = clientSecret;
+		this.jwtValidation = jwtValidation;
 	}
 	
 	@Override
@@ -32,21 +33,22 @@ public class IntrospectionAuthenticationProvider implements AuthenticationProvid
 		
 		try {
 			JwtAuthentication jwtAuth = (JwtAuthentication) authentication;
-			String token = jwtAuth.getCredentials().getTokenAsString();
 			
-			boolean isActive = JWTValidation
-								.getInstance()
-								.validateWithIntrospection(token, "access_token", clientId, clientSecret, issuer)
+			String token = jwtAuth.getCredentials().getTokenAsString();
+			String introspectionURI = OpenIdConfigurationLoader.getInstance().getIntrospectionURL(issuer);
+			
+			boolean isActive = jwtValidation
+								.validateWithIntrospection(token, TokenType.ACCESS.typeHint, clientId, introspectionURI)
 								.isActive();
 			
 			if (isActive) {
 				jwtAuth.setAuthenticated(true);
 				return jwtAuth;
 			} else {
-				throw new TokenExpiredException("Token not activ!");
+				throw new TokenExpiredException("Token not active!");
 			}
 			
-		}catch(JWTVerificationException e) {
+		}catch(Exception e) {
 			throw new AuthenticationServiceException("Failed to verify token!", e);
 		}
 	}
