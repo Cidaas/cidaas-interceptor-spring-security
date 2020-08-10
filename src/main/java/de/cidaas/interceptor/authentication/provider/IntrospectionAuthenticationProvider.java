@@ -45,7 +45,7 @@ public class IntrospectionAuthenticationProvider implements AuthenticationProvid
 				jwtAuth.setAuthenticated(true);
 				return jwtAuth;
 			} else {
-				throw new TokenExpiredException("Token not activ!");
+				throw new TokenExpiredException("Token not active!");
 			}
 			
 		}catch(Exception e) {
