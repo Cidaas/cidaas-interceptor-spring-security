@@ -4,8 +4,6 @@ package de.cidaas.interceptor.config;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,7 +16,6 @@ import de.cidaas.jwt.interfaces.DecodedJWT;
 import de.cidaas.model.JwtAuthentication;
 
 public class BearerSecurityContextRepository implements SecurityContextRepository {
-    private final static Logger logger = LoggerFactory.getLogger(BearerSecurityContextRepository.class);
 
     @Override
     public SecurityContext loadContext(HttpRequestResponseHolder requestResponseHolder) {
@@ -29,7 +26,6 @@ public class BearerSecurityContextRepository implements SecurityContextRepositor
         Authentication authentication = creatAuthenticationUsingToken(token);
         if (authentication != null) {
             context.setAuthentication(authentication);
-            logger.debug("Found bearer token in request. Saving it in SecurityContext");
         }
         return context;
     }
@@ -45,14 +41,12 @@ public class BearerSecurityContextRepository implements SecurityContextRepositor
     
     public JwtAuthentication creatAuthenticationUsingToken(String token) {
         if (token == null) {
-            logger.debug("No token was provided to build {}", JwtAuthentication.class.getName());
             return null;
         }
         try {
             DecodedJWT jwt = JWT.decode(token);
             return new JwtAuthentication(jwt);
         } catch (JWTDecodeException e) {
-            logger.debug("Failed to decode token as jwt", e);
             return null;
         }
     }
