@@ -44,7 +44,7 @@ public class JwtSpringInterceptor {
      * @param clientSecret used to identify the client
      * @return JwtWebSecurityConfigurer for further configuration
      */
-    public static JwtSpringInterceptor introspectionValidation(String clientId, String issuer, String clientSecret) {
+    public static JwtSpringInterceptor introspectionValidation(String clientId, String issuer) {
     	final JWTValidation jwtValidation = new JWTValidation();
         return new JwtSpringInterceptor(new IntrospectionAuthenticationProvider(clientId, issuer, jwtValidation));
     }
