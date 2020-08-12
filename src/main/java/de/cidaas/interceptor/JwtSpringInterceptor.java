@@ -41,7 +41,6 @@ public class JwtSpringInterceptor {
      * Configures application authorization with the introspection API
      * @param clientId identifier of the API and must match the {@code aud} value in the token
      * @param issuer of the token for this API and must match the {@code iss} value in the token
-     * @param clientSecret used to identify the client
      * @return JwtWebSecurityConfigurer for further configuration
      */
     public static JwtSpringInterceptor introspectionValidation(String clientId, String issuer) {
@@ -54,7 +53,7 @@ public class JwtSpringInterceptor {
      * by registering objects to obtain a bearer token from a request.
      * @param http configuration for Spring
      * @return the http configuration for further customizations
-     * @throws Exception
+     * @throws Exception if setup failes
      */
     public HttpSecurity configure(HttpSecurity http) throws Exception {
         return http
