@@ -1,16 +1,17 @@
 package de.cidaas.interceptor.config;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.cidaas.model.ServerResponse;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
