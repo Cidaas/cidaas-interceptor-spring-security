@@ -1,5 +1,6 @@
 package de.cidaas.interceptor.authentication.provider;
 
+import org.apache.http.HttpHost;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
@@ -16,11 +17,20 @@ public class IntrospectionAuthenticationProvider implements AuthenticationProvid
 	private final String clientId;
 	private final String issuer;
 	private final JWTValidation jwtValidation;
+	private final OpenIdConfigurationLoader openIdConfigLoader;
 	
 	public IntrospectionAuthenticationProvider(String clientId, String issuer, JWTValidation jwtValidation) {
 		this.clientId = clientId;
 		this.issuer = issuer;
 		this.jwtValidation = jwtValidation;
+		this.openIdConfigLoader = OpenIdConfigurationLoader.getInstance();
+	}
+	
+	public void setProxy(final String hostname, final int port, final String scheme) {
+		final HttpHost proxy = new HttpHost(hostname, port, scheme);
+		
+		openIdConfigLoader.setProxy(proxy);
+		jwtValidation.setProxy(proxy);
 	}
 	
 	@Override
@@ -35,7 +45,7 @@ public class IntrospectionAuthenticationProvider implements AuthenticationProvid
 			JwtAuthentication jwtAuth = (JwtAuthentication) authentication;
 			
 			String token = jwtAuth.getCredentials().getTokenAsString();
-			String introspectionURI = OpenIdConfigurationLoader.getInstance().getIntrospectionURL(issuer);
+			String introspectionURI = openIdConfigLoader.getIntrospectionURL(issuer);
 			
 			boolean isActive = jwtValidation
 								.validateWithIntrospection(token, TokenType.ACCESS.typeHint, clientId, introspectionURI)
