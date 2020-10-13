@@ -48,8 +48,8 @@
 	</distributionManagement>
 
 	<scm>
-		<connection>scm:git:https://gitlab.widas.de/cidaas-public-devkits/cidaas-interceptors/cidaas-interceptor-spring-security.git</connection>
-		<url>scm:git:https://gitlab.widas.de/cidaas-public-devkits/cidaas-interceptors/cidaas-interceptor-spring-security.git</url>
+		<connection>scm:git:git@gitlab.widas.de:cidaas-public-devkits/cidaas-interceptors/cidaas-interceptor-spring-security.git</connection>
+		<url>scm:git:git@gitlab.widas.de:cidaas-public-devkits/cidaas-interceptors/cidaas-interceptor-spring-security.git</url>
 	  <tag>HEAD</tag>
   </scm>
 
