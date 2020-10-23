@@ -26,6 +26,11 @@ public class IntrospectionAuthenticationProvider implements AuthenticationProvid
 		this.openIdConfigLoader = OpenIdConfigurationLoader.getInstance();
 	}
 	
+	public void setUseSystemProperties(boolean useSystemProperties) {
+		openIdConfigLoader.setUseSystemProperties(useSystemProperties);
+		jwtValidation.setUseSystemProperties(useSystemProperties);
+	}
+	
 	public void setProxy(final String hostname, final int port, final String scheme) {
 		final HttpHost proxy = new HttpHost(hostname, port, scheme);
 		
