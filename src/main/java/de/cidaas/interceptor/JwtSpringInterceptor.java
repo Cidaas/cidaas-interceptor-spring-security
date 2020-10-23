@@ -47,7 +47,18 @@ public class JwtSpringInterceptor {
     	
     	return this;
     }
-
+    
+    /**
+	 * Sets the useSystemProperties.
+	 * 
+	 * @param useSystemProperties
+	 */
+	public JwtSpringInterceptor setUseSystemProperties(boolean useSystemProperties) {
+		IntrospectionAuthenticationProvider interceptor = (IntrospectionAuthenticationProvider) provider;
+		interceptor.setUseSystemProperties(useSystemProperties);
+		return this;
+	}
+    
     /**
      * Configures application authorization for JWT signed with RS256.
      * Will try to validate the token using the public key downloaded from "$issuer/.well-known/jwks.json"
